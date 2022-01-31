@@ -1,6 +1,6 @@
 //variables
 //==================================
-var apiUrl = "https://www.wikidata.org/w/api.php?format=json&action=wbgetentities&ids=Q79015"
+var apiUrl = "https://www.wikidata.org/w/api.php?format=json&action=wbgetentities&ids=Q79015&origin=*"
 
 
 
@@ -9,7 +9,9 @@ var apiUrl = "https://www.wikidata.org/w/api.php?format=json&action=wbgetentitie
 
 //functions
 //====================================
-
+function displayInfo(data) {
+	console.log(data.entities.Q79015.labels.en.value)
+}
 
 
 
@@ -41,6 +43,7 @@ fetch(apiUrl)
 	response.json()
 	.then(function(data) {
 		console.log(data);
+		displayInfo(data);
 		return true;
 	});
 });
