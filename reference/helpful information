@@ -1,2 +1,11 @@
 if we use wikidata, we should follow their best practices:
 https://www.wikidata.org/wiki/Wikidata:Data_access#Best_practices_to_follow
+
+wikidata has specific requirements for using scripts:
+https://www.mediawiki.org/wiki/API:Cross-site_requests
+
+introduction to wikidata:
+https://www.youtube.com/watch?v=m_9_23jXPoE
+
+wikidata api sandbox:
+https://www.wikidata.org/wiki/Special:ApiSandbox#action=wbgetentities&format=json&origin=*&ids=Q79015&languages=en
