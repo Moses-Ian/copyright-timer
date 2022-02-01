@@ -22,6 +22,7 @@ No screenhots yet.
 * [Ian Moses](https://github.com/Moses-Ian)
 
 ### APIs Used:
+* [Wikidata](https://www.wikidata.org/wiki/Special:ApiSandbox)
 * [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page)
 * [moment.js](https://momentjs.com/)
 

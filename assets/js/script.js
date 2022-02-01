@@ -8,6 +8,11 @@ var apiUrlBase = `https://www.wikidata.org/w/api.php?action=wbgetentities&format
 var idBase = '&ids=';
 var titleBase = '&sites=enwiki&titles=';
 
+claimDictionary = {
+	"P50": "was authored by",
+	"P170": "was created by",
+	"P3931": "copyright held by"
+};
 
 
 
@@ -56,9 +61,20 @@ function fetchId(id) {
 function displayId(data) {
 	idArr = [];
 	var item = data.entities[id];
-	var claim = item.claims.P170;
-	console.log(item.labels.en.value);
-	console.log("was created by");
+	for(claimId in claimDictionary) {
+		var claim = item.claims[claimId];
+		if(claim)
+			break;
+	}
+	
+	console.log(`${item.labels.en.value} (${id})`);
+
+	if(!claim) {
+		console.log("data is incomplete :(");
+		return;
+	}
+	
+	console.log(claimDictionary[claimId]);
 	for(i=0; i<claim.length; i++) {
 		// console.log(claim[i].mainsnak.datavalue.value.id);
 		idArr.push(claim[i].mainsnak.datavalue.value.id);
