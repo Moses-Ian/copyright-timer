@@ -54,6 +54,7 @@ function fetchId(id) {
 
 //step 2: display "superman was created by" 
 function displayId(data) {
+	idArr = [];
 	var item = data.entities[id];
 	var claim = item.claims.P170;
 	console.log(item.labels.en.value);
