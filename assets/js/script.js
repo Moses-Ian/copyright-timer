@@ -7,6 +7,8 @@ var	idArr = [];
 var apiUrlBase = `https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&origin=*&languages=en&normalize=yes`
 var idBase = '&ids=';
 var titleBase = '&sites=enwiki&titles=';
+var apiSearchUrlBase = `https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&origin=*&language=en&sort=desc(relevance)`
+var searchBase = `&search=`;
 
 claimDictionary = {
 	"P50": "was authored by",
@@ -16,6 +18,7 @@ claimDictionary = {
 
 var formEl = document.querySelector("form");
 var formInputEl = document.querySelector("#form-input");
+var searchResultsEl = document.querySelector("#search-results");
 
 
 
@@ -120,7 +123,37 @@ function displayCreators(data) {
 
 //search
 function search(searchInput) {
-	
+	fetch(apiSearchUrlBase+searchBase+searchInput)
+	.then(function(response) {
+		if(!response.ok) {
+			console.log("response bad");
+			return false;
+		}
+		response.json()
+		.then(function(data) {
+			console.log(data);
+			displaySearchResults(data);
+			return true;
+		});
+	});
+}
+
+function displaySearchResults(data) {
+	for(i=0; i<data.search.length; i++) {
+		var liEl = document.createElement("li");
+		var h3El = document.createElement("h3");
+		var pEl = document.createElement("p");
+		
+		liEl.dataset.itemId = data.search[i].id;
+		h3El.textContent = data.search[i].label;
+		pEl.textContent = data.search[i].description;
+		
+		liEl.appendChild(h3El);
+		liEl.appendChild(pEl);
+		
+		searchResultsEl.appendChild(liEl);
+	}
+		
 }
 
 

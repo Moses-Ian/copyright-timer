@@ -1,8 +1,8 @@
-/* * { */
+* {
 	/* padding: 0; */
 	/* margin: 0; */
 	/* border: 1px solid blue; */
-/* } */
+}
 
 main {
 	display: flex;
@@ -18,4 +18,12 @@ main {
 
 #data {
 	display: none;
+}
+
+h3 {
+	margin-bottom: 5px;
+}
+
+p {
+	margin: 5px 0;
 }
