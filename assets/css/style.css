@@ -1,0 +1,21 @@
+/* * { */
+	/* padding: 0; */
+	/* margin: 0; */
+	/* border: 1px solid blue; */
+/* } */
+
+main {
+	display: flex;
+}
+
+#search {
+	flex: 4 0 0;
+}
+
+#search-history {
+	flex: 1 0 0;
+}
+
+#data {
+	display: none;
+}

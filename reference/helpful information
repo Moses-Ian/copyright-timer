@@ -1,0 +1,23 @@
+if we use wikidata, we should follow their best practices:
+https://www.wikidata.org/wiki/Wikidata:Data_access#Best_practices_to_follow
+
+wikidata has specific requirements for using scripts:
+https://www.mediawiki.org/wiki/API:Cross-site_requests
+
+introduction to wikidata:
+https://www.youtube.com/watch?v=m_9_23jXPoE
+
+wikidata api sandbox:
+https://www.wikidata.org/wiki/Special:ApiSandbox#action=wbgetentities&format=json&origin=*&ids=Q79015&languages=en
+
+for searching:
+https://www.wikidata.org/w/api.php?action=help&modules=wbsearchentities
+
+for accessing dynamic json data:
+https://stackoverflow.com/questions/11922383/how-can-i-access-and-process-nested-objects-arrays-or-json/11922384#11922384
+
+copyright ch 3
+https://www.copyright.gov/title17/92chap3.html
+
+user story
+https://docs.google.com/document/d/1SEe4HUUJ0xudwEebJawl7uVw6SPm2iSL-Xh7ceZZVJU/edit?usp=sharing
