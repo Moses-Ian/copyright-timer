@@ -9,7 +9,27 @@
     <title>Copyright Timer</title>
   </head>
   <body>
-    <h1>Copyright Timer</h1>
+		<header>
+			<h1>Copyright Timer</h1>
+		</header>
+		
+		<main>
+			<section id="search">
+				<form>
+					<label id="form-title" for="media"><h2>Search for a piece of media:</h2></label>
+					<input id="form-input" name="media" id="media" type="text" placeholder="Superman"/>
+					<button id="form-btn" type="submit">Search</button>
+				</form>
+				<ul id="search-results">
+				</ul>
+				<div id="data">
+					<p id="data-p"></p>
+				</div>
+			</section>
+			<section id="search-history">
+				<h2>Search History:</h2>
+				<ul></ul>
+			</section>
 
     <!-- JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
