@@ -14,6 +14,8 @@ claimDictionary = {
 	"P3931": "copyright held by"
 };
 
+var formEl = document.querySelector("form");
+var formInputEl = document.querySelector("#form-input");
 
 
 
@@ -116,13 +118,24 @@ function displayCreators(data) {
 	}
 }
 
-
+//search
+function search(searchInput) {
+	
+}
 
 
 
 //listeners
 //=====================================
-
+formEl.addEventListener("submit", function() {
+	event.preventDefault();
+	var searchInput = formInputEl.value.trim() || formInputEl.placeholder;
+	formInputEl.setAttribute("placeholder", searchInput);
+	formEl.reset();
+	console.log(searchInput);
+	
+	search(searchInput);
+});
 
 
 
