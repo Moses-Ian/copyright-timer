@@ -220,7 +220,7 @@ searchResultsEl.addEventListener("click", function(event) {
 	// console.log(targetLiEl.dataset.itemId);
 	id = targetLiEl.dataset.itemId;
 	fetchId(id);
-	addToHistory(event.target.textContent);
+	addToHistory(targetLiEl.querySelector("h3").textContent);
 });
 
 historyEl.addEventListener("click", function(event) {
