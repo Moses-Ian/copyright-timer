@@ -10,6 +10,7 @@ var titleBase = '&sites=enwiki&titles=';
 var apiSearchUrlBase = `https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&origin=*&language=en`
 var searchBase = `&search=`;
 var dataResult = "";
+var searchHistory = [];
 
 claimDictionary = {
 	"P50": " was authored by ",
@@ -22,6 +23,7 @@ var formInputEl = document.querySelector("#form-input");
 var searchResultsEl = document.querySelector("#search-results");
 var dataEl = document.querySelector("#data");
 var dataPEl = document.querySelector("#data-p");
+var historyEl = document.querySelector("#search-history ul");
 
 
 
@@ -67,8 +69,6 @@ function fetchId(id) {
 
 //step 2: display "superman was created by" 
 function displayId(data) {
-	searchResultsEl.style.display = "none";
-	dataEl.style.display = "block";
 	dataResult = "";
 	idArr = [];
 	var item = data.entities[id];
@@ -134,6 +134,8 @@ function displayCreators(data) {
 	}
 	
 	dataPEl.textContent = dataResult;
+	searchResultsEl.style.display = "none";
+	dataEl.style.display = "block";
 }
 
 //search
@@ -176,6 +178,25 @@ function displaySearchResults(data) {
 		
 }
 
+function addToHistory(label) {
+	searchHistory.push({id, label});
+	localStorage.setItem("history", JSON.stringify(searchHistory));
+	addHistoryEl(id, label);
+}
+
+function loadHistory() {
+	searchHistory = JSON.parse(localStorage.getItem("history")) || [];
+	for(i=0; i<searchHistory.length; i++) {
+		addHistoryEl(searchHistory[i].id, searchHistory[i].label);
+	}
+}
+
+function addHistoryEl(id, label) {
+	var historyItemEl = document.createElement("li");
+	historyItemEl.dataset.itemId = id;
+	historyItemEl.textContent = label;
+	historyEl.appendChild(historyItemEl);
+}
 
 
 //listeners
@@ -195,9 +216,14 @@ searchResultsEl.addEventListener("click", function(event) {
 	// console.log(targetLiEl.dataset.itemId);
 	id = targetLiEl.dataset.itemId;
 	fetchId(id);
+	addToHistory(event.target.textContent);
 });
 
-
+historyEl.addEventListener("click", function(event) {
+	var targetLiEl = event.target.closest("li");
+	id = targetLiEl.dataset.itemId;
+	fetchId(id);
+});
 
 
 
@@ -208,7 +234,7 @@ searchResultsEl.addEventListener("click", function(event) {
 //=====================================
 // fetchId(id);
 fetchTitle(title);
-
+loadHistory();
 
 
 
