@@ -179,6 +179,10 @@ function displaySearchResults(data) {
 }
 
 function addToHistory(label) {
+	for(i=0; i<searchHistory.length; i++) {
+		if (searchHistory[i].id == id)
+			return;
+	}
 	searchHistory.push({id, label});
 	localStorage.setItem("history", JSON.stringify(searchHistory));
 	addHistoryEl(id, label);
