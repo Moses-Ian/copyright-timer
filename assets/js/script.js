@@ -11,7 +11,7 @@ var apiSearchUrlBase = `https://www.wikidata.org/w/api.php?action=wbsearchentiti
 var searchBase = `&search=`;
 var dataResult = "";
 var searchHistory = [];
-var searchInput;
+var searchTitle;
 
 // Google calendar variables
 var CLIENT_ID = '191270176037-jnegufok0sdp2g71iqs83qipcavfaaem.apps.googleusercontent.com';
@@ -136,7 +136,6 @@ function displayCreators(data) {
 			console.log("who died on");
 			console.log(claim[0].mainsnak.datavalue.value.time);
 			dataResult = dataResult.concat(` who died on ${claim[0].mainsnak.datavalue.value.time} `);
-			addEvent();
 		}
 		else {	//still alive, or data is incomplete
 			console.log("who is still alive")
@@ -233,6 +232,7 @@ searchResultsEl.addEventListener("click", function(event) {
 	// console.log(targetLiEl.dataset.itemId);
 	id = targetLiEl.dataset.itemId;
 	fetchId(id);
+	searchTitle = targetLiEl.querySelector("h3").textContent;
 	addToHistory(targetLiEl.querySelector("h3").textContent);
 });
 
@@ -283,6 +283,7 @@ function updateSigninStatus(isSignedIn) {
 	if (isSignedIn) {
 		authorizeButton.style.display = 'none';
 		signoutButton.style.display = 'block';
+		addEvent();
 	} else {
 		authorizeButton.style.display = 'block';
 		signoutButton.style.display = 'none';
@@ -322,8 +323,8 @@ function appendPre(message) {
  */
 function addEvent() {
 	var event = {
-		'summary': searchInput + ' has been added to the public domain',
-		'description': searchInput + ' has been added to the public domain! Rejoice!',
+		'summary': searchTitle + ' has been added to the public domain',
+		'description': searchTitle + ' has been added to the public domain! Rejoice!',
 		'start': {
 			// insert moment.js calculation here
 			'date': '2116-01-28',
