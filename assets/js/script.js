@@ -136,6 +136,7 @@ function displayCreators(data) {
 			console.log("who died on");
 			console.log(claim[0].mainsnak.datavalue.value.time);
 			dataResult = dataResult.concat(` who died on ${claim[0].mainsnak.datavalue.value.time} `);
+			addEvent();
 		}
 		else {	//still alive, or data is incomplete
 			console.log("who is still alive")
@@ -282,7 +283,6 @@ function updateSigninStatus(isSignedIn) {
 	if (isSignedIn) {
 		authorizeButton.style.display = 'none';
 		signoutButton.style.display = 'block';
-		addEvent();
 	} else {
 		authorizeButton.style.display = 'block';
 		signoutButton.style.display = 'none';
