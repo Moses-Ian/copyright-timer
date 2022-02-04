@@ -221,7 +221,7 @@ formEl.addEventListener("submit", function() {
 	formEl.reset();
 	console.log(searchInput);
 	
-	// addEvent(searchInput);
+	addEvent(searchInput);
 	search(searchInput);
 
 
