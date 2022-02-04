@@ -248,6 +248,8 @@ historyEl.addEventListener("click", function(event) {
 fetchTitle(title);
 loadHistory();
 
+
+// Google Calendar API
 function handleClientLoad() {
 	gapi.load('client:auth2', initClient);
 }
@@ -344,6 +346,7 @@ function addEvent() {
 	request.execute(function (event) {
 		appendPre('Event created: ' + event.htmlLink);
 	});
+
 }
 
 
