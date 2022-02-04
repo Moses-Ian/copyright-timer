@@ -221,7 +221,6 @@ formEl.addEventListener("submit", function() {
 	formEl.reset();
 	console.log(searchInput);
 	
-	addEvent(searchInput);
 	search(searchInput);
 
 
@@ -320,10 +319,10 @@ function appendPre(message) {
  * the authorized user's calendar. If no events are found an
  * appropriate message is printed.
  */
-function addEvent(searchInput) {
+function addEvent() {
 	var event = {
-		'summary': searchInput + ' has been added to the public domain',
-		'description': searchInput + ' has been added to the public domain! Rejoice!',
+		'summary': formInputEl.value.trim() + ' has been added to the public domain',
+		'description': formInputEl.value.trim() + ' has been added to the public domain! Rejoice!',
 		'start': {
 			// insert moment.js calculation here
 			'date': '2116-01-28',
