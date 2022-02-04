@@ -11,6 +11,7 @@ var apiSearchUrlBase = `https://www.wikidata.org/w/api.php?action=wbsearchentiti
 var searchBase = `&search=`;
 var dataResult = "";
 var searchHistory = [];
+var searchInput = "";
 
 // Google calendar variables
 var CLIENT_ID = '191270176037-jnegufok0sdp2g71iqs83qipcavfaaem.apps.googleusercontent.com';
