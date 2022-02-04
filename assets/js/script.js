@@ -11,6 +11,7 @@ var apiSearchUrlBase = `https://www.wikidata.org/w/api.php?action=wbsearchentiti
 var searchBase = `&search=`;
 var dataResult = "";
 var searchHistory = [];
+var expireDate = "";
 
 claimDictionary = {
 	"P50": " was authored by ",
@@ -25,6 +26,7 @@ var dataEl = document.querySelector("#data");
 var dataPEl = document.querySelector("#data-p");
 var historyEl = document.querySelector("#search-history ul");
 
+var DateTime = luxon.DateTime;	//alias
 
 
 //functions
@@ -123,9 +125,14 @@ function displayCreators(data) {
 		dataResult = dataResult.concat(item.labels.en.value);
 		var claim = item.claims.P570;
 		if(claim) {
-			console.log("who died on");
-			console.log(claim[0].mainsnak.datavalue.value.time);
-			dataResult = dataResult.concat(` who died on ${claim[0].mainsnak.datavalue.value.time} `);
+			// console.log("who died on");
+			// console.log(claim[0].mainsnak.datavalue.value.time);
+			var time = claim[0].mainsnak.datavalue.value.time
+			time = DateTime.fromISO(time.substring(1));
+			// console.log(time.toLocaleString());
+			dataResult = dataResult.concat(` who died on ${time.toLocaleString()} `);
+			time = time.plus({year: 50});
+			console.log(time.toLocaleString());
 		}
 		else {	//still alive, or data is incomplete
 			console.log("who is still alive")
