@@ -11,7 +11,7 @@ var apiSearchUrlBase = `https://www.wikidata.org/w/api.php?action=wbsearchentiti
 var searchBase = `&search=`;
 var dataResult = "";
 var searchHistory = [];
-var searchInput = "";
+var searchInput;
 
 // Google calendar variables
 var CLIENT_ID = '191270176037-jnegufok0sdp2g71iqs83qipcavfaaem.apps.googleusercontent.com';
@@ -149,8 +149,8 @@ function displayCreators(data) {
 }
 
 //search
-function search(searchInput) {
-	fetch(apiSearchUrlBase+searchBase+searchInput)
+function search(searchTerm) {
+	fetch(apiSearchUrlBase+searchBase+searchTerm)
 	.then(function(response) {
 		if(!response.ok) {
 			console.log("response bad");
@@ -217,7 +217,7 @@ function addHistoryEl(id, label) {
 //=====================================
 formEl.addEventListener("submit", function() {
 	event.preventDefault();
-	var searchInput = formInputEl.value.trim() || formInputEl.placeholder;
+	searchInput = formInputEl.value.trim() || formInputEl.placeholder;
 	formInputEl.setAttribute("placeholder", searchInput);
 	formEl.reset();
 	console.log(searchInput);
@@ -322,8 +322,8 @@ function appendPre(message) {
  */
 function addEvent() {
 	var event = {
-		'summary': formInputEl.value.trim() + ' has been added to the public domain',
-		'description': formInputEl.value.trim() + ' has been added to the public domain! Rejoice!',
+		'summary': searchInput + ' has been added to the public domain',
+		'description': searchInput + ' has been added to the public domain! Rejoice!',
 		'start': {
 			// insert moment.js calculation here
 			'date': '2116-01-28',
