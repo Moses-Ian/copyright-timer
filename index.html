@@ -33,10 +33,18 @@
 			<section id="calendar">
 				<button id="authorize_button" style="display: none;">Add Date to Google Calendar</button>
 				<button id="signout_button" style="display: none;">Sign Out</button>
+				<pre id="content" style="white-space: pre-wrap;"></pre>
 			</section>
+
+			
 
     <!-- JavaScript -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-		<script src="./assets/js/script.js"></script>		
+		<script src="./assets/js/script.js"></script>	
+		
+		<script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+        </script>
+		
   </body>
 </html>

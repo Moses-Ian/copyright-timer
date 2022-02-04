@@ -29,3 +29,8 @@ h3 {
 p {
 	margin: 5px 0;
 }
+
+#calendar {
+	display: flex;
+	flex-direction: column;
+}

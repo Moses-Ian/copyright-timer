@@ -12,6 +12,15 @@ var searchBase = `&search=`;
 var dataResult = "";
 var searchHistory = [];
 
+// Google calendar variables
+var CLIENT_ID = '191270176037-jnegufok0sdp2g71iqs83qipcavfaaem.apps.googleusercontent.com';
+var API_KEY = 'AIzaSyAZgZvsAUrRFzruFrhG3k_jLPkKkByIxo8';
+var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
+var SCOPES = "https://www.googleapis.com/auth/calendar";
+var authorizeButton = document.getElementById('authorize_button');
+var signoutButton = document.getElementById('signout_button');
+
+
 claimDictionary = {
 	"P50": " was authored by ",
 	"P170": " was created by ",
@@ -212,7 +221,10 @@ formEl.addEventListener("submit", function() {
 	formEl.reset();
 	console.log(searchInput);
 	
+	// addEvent(searchInput);
 	search(searchInput);
+
+
 });
 
 searchResultsEl.addEventListener("click", function(event) {
@@ -229,17 +241,109 @@ historyEl.addEventListener("click", function(event) {
 	fetchId(id);
 });
 
-
-
-
-
-
 //body
 //=====================================
 // fetchId(id);
 fetchTitle(title);
 loadHistory();
 
+function handleClientLoad() {
+	gapi.load('client:auth2', initClient);
+}
+
+  /**
+         *  Initializes the API client library and sets up sign-in state
+         *  listeners.
+         */
+   function initClient() {
+	gapi.client.init({
+		apiKey: API_KEY,
+		clientId: CLIENT_ID,
+		discoveryDocs: DISCOVERY_DOCS,
+		scope: SCOPES
+	}).then(function () {
+		// Listen for sign-in state changes.
+		gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
+
+		// Handle the initial sign-in state.
+		updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+		authorizeButton.onclick = handleAuthClick;
+		signoutButton.onclick = handleSignoutClick;
+	}, function (error) {
+		appendPre(JSON.stringify(error, null, 2));
+	});
+}
+
+/**
+ *  Called when the signed in status changes, to update the UI
+ *  appropriately. After a sign-in, the API is called.
+ */
+function updateSigninStatus(isSignedIn) {
+	if (isSignedIn) {
+		authorizeButton.style.display = 'none';
+		signoutButton.style.display = 'block';
+		addEvent();
+	} else {
+		authorizeButton.style.display = 'block';
+		signoutButton.style.display = 'none';
+	}
+}
+
+/**
+ *  Sign in the user upon button click.
+ */
+function handleAuthClick(event) {
+	gapi.auth2.getAuthInstance().signIn();
+}
+
+/**
+ *  Sign out the user upon button click.
+ */
+function handleSignoutClick(event) {
+	gapi.auth2.getAuthInstance().signOut();
+}
+
+/**
+ * Append a pre element to the body containing the given message
+ * as its text node. Used to display the results of the API call.
+ *
+ * @param {string} message Text to be placed in pre element.
+ */
+function appendPre(message) {
+	var pre = document.getElementById('content');
+	var textContent = document.createTextNode(message + '\n');
+	pre.appendChild(textContent);
+}
+
+/**
+ * Print the summary and start datetime/date of the next ten events in
+ * the authorized user's calendar. If no events are found an
+ * appropriate message is printed.
+ */
+function addEvent(searchInput) {
+	var event = {
+		'summary': searchInput + ' has been added to the public domain',
+		'description': searchInput + ' has been added to the public domain! Rejoice!',
+		'start': {
+			// insert moment.js calculation here
+			'date': '2116-01-28',
+			'timeZone': 'America/Los_Angeles'
+		},
+		'end': {
+			'date': '2116-01-28',
+			'timeZone': 'America/Los_Angeles'
+		},
+	};
+
+	var request = gapi.client.calendar.events.insert({
+		'calendarId': 'primary',
+		'resource': event
+	});
+
+	request.execute(function (event) {
+		appendPre('Event created: ' + event.htmlLink);
+	});
+}
 
 
 
