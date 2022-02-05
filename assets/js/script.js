@@ -1,7 +1,7 @@
 //variables
 //==================================
 var id = "Q79015";	//superman->this will update with form update
-var title = "superman";
+var title= '';
 // var title = "Katniss Everdeen";
 var	idArr = [];
 var apiUrlBase = `https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&origin=*&languages=en&normalize=yes`
@@ -20,6 +20,7 @@ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/
 var SCOPES = "https://www.googleapis.com/auth/calendar";
 var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
+var calendarSection = document.getElementById('calendar');
 
 
 claimDictionary = {
@@ -136,6 +137,7 @@ function displayCreators(data) {
 			console.log("who died on");
 			console.log(claim[0].mainsnak.datavalue.value.time);
 			dataResult = dataResult.concat(` who died on ${claim[0].mainsnak.datavalue.value.time} `);
+			calendarSection.style.display = 'block'
 		}
 		else {	//still alive, or data is incomplete
 			console.log("who is still alive")
