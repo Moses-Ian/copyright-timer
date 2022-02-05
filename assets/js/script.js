@@ -21,6 +21,7 @@ var SCOPES = "https://www.googleapis.com/auth/calendar";
 var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
 var calendarSection = document.getElementById('calendar');
+var addDate = document.getElementById('add_date_button');
 
 
 claimDictionary = {
@@ -325,7 +326,7 @@ function appendPre(message) {
  * the authorized user's calendar. If no events are found an
  * appropriate message is printed.
  */
-function addEvent() {
+addDate.addEventListener('click', function addEvent(){
 	var event = {
 		'summary': searchTitle + ' has been added to the public domain',
 		'description': searchTitle + ' has been added to the public domain! Rejoice!',
@@ -348,8 +349,33 @@ function addEvent() {
 	request.execute(function (event) {
 		appendPre('Event created: ' + event.htmlLink);
 	});
+});
+// historyEl.addEventListener("click", function(event) {
+// function addEvent() {
+// 	var event = {
+// 		'summary': searchTitle + ' has been added to the public domain',
+// 		'description': searchTitle + ' has been added to the public domain! Rejoice!',
+// 		'start': {
+// 			// insert moment.js calculation here
+// 			'date': '2116-01-28',
+// 			'timeZone': 'America/Los_Angeles'
+// 		},
+// 		'end': {
+// 			'date': '2116-01-28',
+// 			'timeZone': 'America/Los_Angeles'
+// 		},
+// 	};
 
-}
+// 	var request = gapi.client.calendar.events.insert({
+// 		'calendarId': 'primary',
+// 		'resource': event
+// 	});
+
+// 	request.execute(function (event) {
+// 		appendPre('Event created: ' + event.htmlLink);
+// 	});
+
+// }
 
 
 
