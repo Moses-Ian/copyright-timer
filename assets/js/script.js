@@ -136,42 +136,45 @@ function fetchCreators(id) {
 function displayCreators(data) {
 	expiredDateArr = [];
 	copyrightHolderArr = [];
-	for(i=0; i<idArr.length; i++) {
+	for (i = 0; i < idArr.length; i++) {
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
 		dataResult = dataResult.concat(item.labels.en.value);
 		copyrightHolderArr.push(item.labels.en.value);
 		var claim = item.claims.P570;
-		if(claim) {
+		if (claim) {
 			// console.log("who died on");
 			// console.log(claim[0].mainsnak.datavalue.value.time);
 			var time = claim[0].mainsnak.datavalue.value.time
 			time = DateTime.fromISO(time.substring(1));
 			console.log(time.toLocaleString());
 			dataResult = dataResult.concat(` who died on ${time.toLocaleString()} `);
-			time = time.plus({'year': 70});
+			time = time.plus({ 'year': 70 });
 			console.log(time.toLocaleString());
 			expiredDateArr.push(time);
-			
+			calendarSection.style.display = 'block'
+
 		}
 		else {	//still alive, or data is incomplete
 			console.log("who is still alive")
 			dataResult = dataResult.concat(" who is still alive ");
 		}
+		searchResultsEl.style.display = "none";
+		dataEl.style.display = "block";
 	}
 	expiredDate = null;
 	var displayText;
-	if(expiredDateArr.length) {
+	if (expiredDateArr.length) {
 		//get the last date
-		for(i=0; i<expiredDateArr.length; i++)
-			if(expiredDate === null || expiredDateArr[i] > expiredDate)
+		for (i = 0; i < expiredDateArr.length; i++)
+			if (expiredDate === null || expiredDateArr[i] > expiredDate)
 				expiredDate = expiredDateArr[i];
 		//build the textContent
 		displayText = `This copyright expires on ${expiredDate.toLocaleString()}.`;
 	} else {
-	displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 && s}.`;
+		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 && s}.`;
 	}
-	
+
 	dataPEl.textContent = dataResult;
 	expireDateEl.textContent = displayText;
 	searchResultsEl.style.display = "none";
