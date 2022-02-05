@@ -12,6 +12,9 @@ var searchBase = `&search=`;
 var dataResult = "";
 var searchHistory = [];
 var searchTitle;
+var expiredDateArr = [];
+var expiredDate;
+var copyrightHolderArr = [];
 
 // Google calendar variables
 var CLIENT_ID = '191270176037-jnegufok0sdp2g71iqs83qipcavfaaem.apps.googleusercontent.com';
@@ -35,8 +38,10 @@ var formInputEl = document.querySelector("#form-input");
 var searchResultsEl = document.querySelector("#search-results");
 var dataEl = document.querySelector("#data");
 var dataPEl = document.querySelector("#data-p");
+var expireDateEl = document.querySelector("#expire-date");
 var historyEl = document.querySelector("#search-history ul");
 
+var DateTime = luxon.DateTime;	//alias
 
 
 //functions
@@ -129,24 +134,46 @@ function fetchCreators(id) {
 
 //step 4: display "Jerry Siegal who died on 28 Jan 1996, etc"
 function displayCreators(data) {
-	for (i = 0; i < idArr.length; i++) {
+	expiredDateArr = [];
+	copyrightHolderArr = [];
+	for(i=0; i<idArr.length; i++) {
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
 		dataResult = dataResult.concat(item.labels.en.value);
+		copyrightHolderArr.push(item.labels.en.value);
 		var claim = item.claims.P570;
-		if (claim) {
-			console.log("who died on");
-			console.log(claim[0].mainsnak.datavalue.value.time);
-			dataResult = dataResult.concat(` who died on ${claim[0].mainsnak.datavalue.value.time} `);
-			calendarSection.style.display = 'block'
+		if(claim) {
+			// console.log("who died on");
+			// console.log(claim[0].mainsnak.datavalue.value.time);
+			var time = claim[0].mainsnak.datavalue.value.time
+			time = DateTime.fromISO(time.substring(1));
+			console.log(time.toLocaleString());
+			dataResult = dataResult.concat(` who died on ${time.toLocaleString()} `);
+			time = time.plus({'year': 70});
+			console.log(time.toLocaleString());
+			expiredDateArr.push(time);
+			
 		}
 		else {	//still alive, or data is incomplete
 			console.log("who is still alive")
 			dataResult = dataResult.concat(" who is still alive ");
 		}
 	}
-
+	expiredDate = null;
+	var displayText;
+	if(expiredDateArr.length) {
+		//get the last date
+		for(i=0; i<expiredDateArr.length; i++)
+			if(expiredDate === null || expiredDateArr[i] > expiredDate)
+				expiredDate = expiredDateArr[i];
+		//build the textContent
+		displayText = `This copyright expires on ${expiredDate.toLocaleString()}.`;
+	} else {
+	displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 && s}.`;
+	}
+	
 	dataPEl.textContent = dataResult;
+	expireDateEl.textContent = displayText;
 	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
 }
@@ -356,33 +383,6 @@ addDate.addEventListener('click', function addEvent() {
 	addDate.style.display = 'none'
 
 });
-// historyEl.addEventListener("click", function(event) {
-// function addEvent() {
-// 	var event = {
-// 		'summary': searchTitle + ' has been added to the public domain',
-// 		'description': searchTitle + ' has been added to the public domain! Rejoice!',
-// 		'start': {
-// 			// insert moment.js calculation here
-// 			'date': '2116-01-28',
-// 			'timeZone': 'America/Los_Angeles'
-// 		},
-// 		'end': {
-// 			'date': '2116-01-28',
-// 			'timeZone': 'America/Los_Angeles'
-// 		},
-// 	};
-
-// 	var request = gapi.client.calendar.events.insert({
-// 		'calendarId': 'primary',
-// 		'resource': event
-// 	});
-
-// 	request.execute(function (event) {
-// 		appendPre('Event created: ' + event.htmlLink);
-// 	});
-
-// }
-
 
 
 
