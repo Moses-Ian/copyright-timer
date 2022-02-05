@@ -2,64 +2,117 @@
 @tailwind components;
 @tailwind utilities;
 
+
 /* * { */
 	/* padding: 0; */
 	/* margin: 0; */
 	/* border: 1px solid blue; */
 /* } */
 
-body {
 
-	box-sizing: border-box;
+/* added grid system to body */
+body {
+    box-sizing: border-box;
     height: 100vh;
     margin: 0;
     padding: 0;
-
 }
 
 body {
     margin: 0;
     display:grid;
-    grid-template-columns: auto auto auto;
-    grid-template-rows: auto auto auto;
-    grid-gap: 100px;
+    grid-template-columns: auto 80% 0px;
+    grid-template-rows: 80px 80% 80px;
+    grid-gap: 10px;
     grid-template-areas:
-        "header header header"
-        "search search search"
-		"info info info"
-
+        "header header search-history"
+        "search search search-history"
+        "info info info"
 }
 
 header {
 
-grid-area: header;
+	grid-area: header;
+	background-color: white;
+	background-image: url('../images/header-background.jpg');
 
+}
+
+h1 {
+
+	color:white;
+}
+
+#search {
+	
+	grid-area: search;
+	position:relative;
+	left: 750px;
+}
+
+form {
+	
+	grid-area: search;
+	float: right;
+
+}
+#search-history {
+	flex: 1 0 0;
+	grid-area: search-history;
+	float: right;
+	position:relative;
+	bottom: 70px;
+	right: 20px
 }
 
 h2 {
 
-	grid-area: header;
+	color: white;
 	
 }
-       
 
 main {
 	display: flex;
-}
-
-#search {
-	flex: 4 0 0;
-}
-
-#search-history {
 	flex: 1 0 0;
+	background-color: yellow;
+	background-position: center;
+	grid-area: search;
+	background-image: url('../images/main-image.jpg');
+
 }
 
 #data {
 	display: none;
+	
 }
 
-title {
-display: block;
+footer {
+
+    grid-area: info;
+    background-image: url('../images/footer-image.jpg');
+    
+    }
+
+
+footer a {
+        color: yellow;
+        font-size: 100px;
+        text-align: center;
+    }
+
+footer nav {
+    text-align: center;
+    margin: 10px 0;
+}
+
+footer nav ul li {
+    display: inline;
+}
+
+footer nav ul li a {
+    margin: 20px 160px;
+    font-weight: bold;
+    font-size: 50px;
+    display: inline
 
 }
