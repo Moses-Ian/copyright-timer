@@ -365,11 +365,11 @@ addDate.addEventListener('click', function addEvent() {
 		'description': searchTitle + ' has been added to the public domain! Rejoice!',
 		'start': {
 			// insert moment.js calculation here
-			'date': expiredDate.toLocaleString(),
+			'date': expiredDate.toFormat('yyyy-LL-dd'),
 			'timeZone': 'America/Los_Angeles'
 		},
 		'end': {
-			'date': expiredDate.toLocaleString(),
+			'date': expiredDate.toFormat('yyyy-LL-dd'),
 			'timeZone': 'America/Los_Angeles'
 		},
 	};
