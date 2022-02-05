@@ -349,7 +349,7 @@ addDate.addEventListener('click', function addEvent(){
 	request.execute(function (event) {
 		appendPre('Event created: ' + event.htmlLink);
 	});
-});
+}, calendarSection.style.display = 'none');
 // historyEl.addEventListener("click", function(event) {
 // function addEvent() {
 // 	var event = {
