@@ -11,7 +11,8 @@ var apiSearchUrlBase = `https://www.wikidata.org/w/api.php?action=wbsearchentiti
 var searchBase = `&search=`;
 var dataResult = "";
 var searchHistory = [];
-var expireDate = "";
+var expiredDateArr = [];
+var expiredDate;
 
 claimDictionary = {
 	"P50": " was authored by ",
@@ -24,6 +25,7 @@ var formInputEl = document.querySelector("#form-input");
 var searchResultsEl = document.querySelector("#search-results");
 var dataEl = document.querySelector("#data");
 var dataPEl = document.querySelector("#data-p");
+var expireDateEl = document.querySelector("#expire-date");
 var historyEl = document.querySelector("#search-history ul");
 
 var DateTime = luxon.DateTime;	//alias
@@ -119,6 +121,7 @@ function fetchCreators(id){
 
 //step 4: display "Jerry Siegal who died on 28 Jan 1996, etc"
 function displayCreators(data) {
+	expiredDateArr = [];
 	for(i=0; i<idArr.length; i++) {
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
@@ -129,10 +132,12 @@ function displayCreators(data) {
 			// console.log(claim[0].mainsnak.datavalue.value.time);
 			var time = claim[0].mainsnak.datavalue.value.time
 			time = DateTime.fromISO(time.substring(1));
-			// console.log(time.toLocaleString());
-			dataResult = dataResult.concat(` who died on ${time.toLocaleString()} `);
-			time = time.plus({year: 50});
 			console.log(time.toLocaleString());
+			dataResult = dataResult.concat(` who died on ${time.toLocaleString()} `);
+			time = time.plus({'year': 70});
+			console.log(time.toLocaleString());
+			expiredDateArr.push(time);
+			
 		}
 		else {	//still alive, or data is incomplete
 			console.log("who is still alive")
@@ -140,7 +145,22 @@ function displayCreators(data) {
 		}
 	}
 	
+	expiredDate = null;
+	var displayText;
+	console.log(expiredDateArr);
+	if(expiredDateArr.length) {
+		//get the last date
+		for(i=0; i<expiredDateArr.length; i++)
+			if(expiredDate === null || expiredDateArr[i] > expiredDate)
+				expiredDate = expiredDateArr[i];
+		//build the textContent
+		displayText = `This copyright expires on ${expiredDate.toLocaleString()}.`;
+	} else {
+		displayText = `This copyright will expire 70 years after ${item.labels.en.value} dies.`;
+	}
+	
 	dataPEl.textContent = dataResult;
+	expireDateEl.textContent = displayText;
 	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
 }
