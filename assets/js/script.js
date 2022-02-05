@@ -1,9 +1,9 @@
 //variables
 //==================================
 var id = "Q79015";	//superman->this will update with form update
-var title= '';
+var title = '';
 // var title = "Katniss Everdeen";
-var	idArr = [];
+var idArr = [];
 var apiUrlBase = `https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&origin=*&languages=en&normalize=yes`
 var idBase = '&ids=';
 var titleBase = '&sites=enwiki&titles=';
@@ -43,40 +43,40 @@ var historyEl = document.querySelector("#search-history ul");
 //====================================
 //step 1: get superman data from wikidata
 function fetchTitle(title) {
-	fetch(apiUrlBase+titleBase+title)
-	.then(function(response) {
-		if(!response.ok) {
-			console.log("response bad");
-			return false;
-		}
-		response.json()
-		.then(function(data) {
-			console.log(data);
-			for (id in data.entities) {
-				// console.log(id);
-				displayId(data);
+	fetch(apiUrlBase + titleBase + title)
+		.then(function (response) {
+			if (!response.ok) {
+				console.log("response bad");
+				return false;
 			}
-			
-			return true;
+			response.json()
+				.then(function (data) {
+					console.log(data);
+					for (id in data.entities) {
+						// console.log(id);
+						displayId(data);
+					}
+
+					return true;
+				});
 		});
-	});
 }
 
 //alternative step 1: get Q79015 (superman) data from wikidata
 function fetchId(id) {
-	fetch(apiUrlBase+idBase+id)
-	.then(function(response) {
-		if(!response.ok) {
-			console.log("response bad");
-			return false;
-		}
-		response.json()
-		.then(function(data) {
-			console.log(data);
-			displayId(data);
-			return true;
+	fetch(apiUrlBase + idBase + id)
+		.then(function (response) {
+			if (!response.ok) {
+				console.log("response bad");
+				return false;
+			}
+			response.json()
+				.then(function (data) {
+					console.log(data);
+					displayId(data);
+					return true;
+				});
 		});
-	});
 }
 
 //step 2: display "superman was created by" 
@@ -84,25 +84,25 @@ function displayId(data) {
 	dataResult = "";
 	idArr = [];
 	var item = data.entities[id];
-	for(claimId in claimDictionary) {
+	for (claimId in claimDictionary) {
 		var claim = item.claims[claimId];
-		if(claim)
+		if (claim)
 			break;
 	}
-	
+
 	console.log(`${item.labels.en.value} (${id})`);
 	dataResult = dataResult.concat(item.labels.en.value);
 
-	if(!claim) {
+	if (!claim) {
 		console.log("data is incomplete :(");
 		dataResult = "data is incomplete :(";
 		dataPEl.textContent = dataResult;
 		return;
 	}
-	
+
 	console.log(claimDictionary[claimId]);
 	dataResult = dataResult.concat(claimDictionary[claimId]);
-	for(i=0; i<claim.length; i++) {
+	for (i = 0; i < claim.length; i++) {
 		// console.log(claim[i].mainsnak.datavalue.value.id);
 		idArr.push(claim[i].mainsnak.datavalue.value.id);
 	}
@@ -111,30 +111,30 @@ function displayId(data) {
 }
 
 //step 3: get the people superman was created by
-function fetchCreators(id){
-	fetch(apiUrlBase+idBase+id)
-	.then(function(response) {
-		if(!response.ok) {
-			console.log("response bad");
-			return false;
-		}
-		response.json()
-		.then(function(data) {
-			console.log(data);
-			displayCreators(data);
-			return true;
+function fetchCreators(id) {
+	fetch(apiUrlBase + idBase + id)
+		.then(function (response) {
+			if (!response.ok) {
+				console.log("response bad");
+				return false;
+			}
+			response.json()
+				.then(function (data) {
+					console.log(data);
+					displayCreators(data);
+					return true;
+				});
 		});
-	});
 }
 
 //step 4: display "Jerry Siegal who died on 28 Jan 1996, etc"
 function displayCreators(data) {
-	for(i=0; i<idArr.length; i++) {
+	for (i = 0; i < idArr.length; i++) {
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
 		dataResult = dataResult.concat(item.labels.en.value);
 		var claim = item.claims.P570;
-		if(claim) {
+		if (claim) {
 			console.log("who died on");
 			console.log(claim[0].mainsnak.datavalue.value.time);
 			dataResult = dataResult.concat(` who died on ${claim[0].mainsnak.datavalue.value.time} `);
@@ -145,7 +145,7 @@ function displayCreators(data) {
 			dataResult = dataResult.concat(" who is still alive ");
 		}
 	}
-	
+
 	dataPEl.textContent = dataResult;
 	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
@@ -153,57 +153,57 @@ function displayCreators(data) {
 
 //search
 function search(searchTerm) {
-	fetch(apiSearchUrlBase+searchBase+searchTerm)
-	.then(function(response) {
-		if(!response.ok) {
-			console.log("response bad");
-			return false;
-		}
-		response.json()
-		.then(function(data) {
-			console.log(data);
-			displaySearchResults(data);
-			return true;
+	fetch(apiSearchUrlBase + searchBase + searchTerm)
+		.then(function (response) {
+			if (!response.ok) {
+				console.log("response bad");
+				return false;
+			}
+			response.json()
+				.then(function (data) {
+					console.log(data);
+					displaySearchResults(data);
+					return true;
+				});
 		});
-	});
 }
 
 function displaySearchResults(data) {
 	dataEl.style.display = "none";
 	searchResultsEl.innerHTML = "";		//no INTERNAL event listeners, so this is ok
 
-	for(i=0; i<data.search.length; i++) {
+	for (i = 0; i < data.search.length; i++) {
 		var liEl = document.createElement("li");
 		var h3El = document.createElement("h3");
 		var pEl = document.createElement("p");
-		
+
 		liEl.dataset.itemId = data.search[i].id;
 		h3El.textContent = data.search[i].label;
 		pEl.textContent = data.search[i].description;
-		
+
 		liEl.appendChild(h3El);
 		liEl.appendChild(pEl);
-		
+
 		searchResultsEl.appendChild(liEl);
 	}
-	
+
 	searchResultsEl.style.display = "block";
-		
+
 }
 
 function addToHistory(label) {
-	for(i=0; i<searchHistory.length; i++) {
+	for (i = 0; i < searchHistory.length; i++) {
 		if (searchHistory[i].id == id)
 			return;
 	}
-	searchHistory.push({id, label});
+	searchHistory.push({ id, label });
 	localStorage.setItem("history", JSON.stringify(searchHistory));
 	addHistoryEl(id, label);
 }
 
 function loadHistory() {
 	searchHistory = JSON.parse(localStorage.getItem("history")) || [];
-	for(i=0; i<searchHistory.length; i++) {
+	for (i = 0; i < searchHistory.length; i++) {
 		addHistoryEl(searchHistory[i].id, searchHistory[i].label);
 	}
 }
@@ -218,19 +218,19 @@ function addHistoryEl(id, label) {
 
 //listeners
 //=====================================
-formEl.addEventListener("submit", function() {
+formEl.addEventListener("submit", function () {
 	event.preventDefault();
 	searchInput = formInputEl.value.trim() || formInputEl.placeholder;
 	formInputEl.setAttribute("placeholder", searchInput);
 	formEl.reset();
 	console.log(searchInput);
-	
+
 	search(searchInput);
 
 
 });
 
-searchResultsEl.addEventListener("click", function(event) {
+searchResultsEl.addEventListener("click", function (event) {
 	var targetLiEl = event.target.closest("li");
 	// console.log(targetLiEl.dataset.itemId);
 	id = targetLiEl.dataset.itemId;
@@ -239,7 +239,7 @@ searchResultsEl.addEventListener("click", function(event) {
 	addToHistory(targetLiEl.querySelector("h3").textContent);
 });
 
-historyEl.addEventListener("click", function(event) {
+historyEl.addEventListener("click", function (event) {
 	var targetLiEl = event.target.closest("li");
 	id = targetLiEl.dataset.itemId;
 	fetchId(id);
@@ -257,11 +257,11 @@ function handleClientLoad() {
 	gapi.load('client:auth2', initClient);
 }
 
-  /**
-         *  Initializes the API client library and sets up sign-in state
-         *  listeners.
-         */
-   function initClient() {
+/**
+	   *  Initializes the API client library and sets up sign-in state
+	   *  listeners.
+	   */
+function initClient() {
 	gapi.client.init({
 		apiKey: API_KEY,
 		clientId: CLIENT_ID,
@@ -288,10 +288,11 @@ function updateSigninStatus(isSignedIn) {
 	if (isSignedIn) {
 		authorizeButton.style.display = 'none';
 		signoutButton.style.display = 'block';
-		
+
 	} else {
 		authorizeButton.style.display = 'block';
 		signoutButton.style.display = 'none';
+		addDate.style.display = 'none';
 	}
 }
 
@@ -326,7 +327,7 @@ function appendPre(message) {
  * the authorized user's calendar. If no events are found an
  * appropriate message is printed.
  */
-addDate.addEventListener('click', function addEvent(){
+addDate.addEventListener('click', function addEvent() {
 	var event = {
 		'summary': searchTitle + ' has been added to the public domain',
 		'description': searchTitle + ' has been added to the public domain! Rejoice!',
@@ -349,7 +350,10 @@ addDate.addEventListener('click', function addEvent(){
 	request.execute(function (event) {
 		appendPre('Event created: ' + event.htmlLink);
 	});
-}, calendarSection.style.display = 'none');
+	signoutButton.style.display = 'none'
+	addDate.style.display = 'none'
+
+});
 // historyEl.addEventListener("click", function(event) {
 // function addEvent() {
 // 	var event = {
