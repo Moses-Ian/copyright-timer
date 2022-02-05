@@ -21,6 +21,41 @@ body {
 	background-color: var(--background);
 }
 
+body {
+
+	box-sizing: border-box;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+
+}
+
+body {
+    margin: 0;
+    display:grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: auto auto auto;
+    grid-gap: 100px;
+    grid-template-areas:
+        "header header header"
+        "search search search"
+		"info info info"
+
+}
+
+header {
+
+grid-area: header;
+
+}
+
+h2 {
+
+	grid-area: header;
+	
+}
+       
+
 main {
 	display: flex;
 	justify-content: space-between;
