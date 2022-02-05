@@ -13,6 +13,7 @@ var dataResult = "";
 var searchHistory = [];
 var expiredDateArr = [];
 var expiredDate;
+var copyrightHolderArr = [];
 
 claimDictionary = {
 	"P50": " was authored by ",
@@ -122,10 +123,12 @@ function fetchCreators(id){
 //step 4: display "Jerry Siegal who died on 28 Jan 1996, etc"
 function displayCreators(data) {
 	expiredDateArr = [];
+	copyrightHolderArr = [];
 	for(i=0; i<idArr.length; i++) {
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
 		dataResult = dataResult.concat(item.labels.en.value);
+		copyrightHolderArr.push(item.labels.en.value);
 		var claim = item.claims.P570;
 		if(claim) {
 			// console.log("who died on");
@@ -147,7 +150,6 @@ function displayCreators(data) {
 	
 	expiredDate = null;
 	var displayText;
-	console.log(expiredDateArr);
 	if(expiredDateArr.length) {
 		//get the last date
 		for(i=0; i<expiredDateArr.length; i++)
@@ -156,7 +158,7 @@ function displayCreators(data) {
 		//build the textContent
 		displayText = `This copyright expires on ${expiredDate.toLocaleString()}.`;
 	} else {
-		displayText = `This copyright will expire 70 years after ${item.labels.en.value} dies.`;
+	displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 && s}.`;
 	}
 	
 	dataPEl.textContent = dataResult;
