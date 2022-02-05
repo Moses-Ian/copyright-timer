@@ -225,7 +225,7 @@ formEl.addEventListener("submit", function () {
 	formEl.reset();
 	console.log(searchInput);
 	calendarSection.style.display = 'none';
-	
+
 	search(searchInput);
 
 
@@ -335,11 +335,11 @@ addDate.addEventListener('click', function addEvent() {
 		'description': searchTitle + ' has been added to the public domain! Rejoice!',
 		'start': {
 			// insert moment.js calculation here
-			'date': '2116-01-28',
+			'date': expiredDate.toLocaleString(),
 			'timeZone': 'America/Los_Angeles'
 		},
 		'end': {
-			'date': '2116-01-28',
+			'date': expiredDate.toLocaleString(),
 			'timeZone': 'America/Los_Angeles'
 		},
 	};
