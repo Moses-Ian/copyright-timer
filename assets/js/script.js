@@ -224,7 +224,8 @@ formEl.addEventListener("submit", function () {
 	formInputEl.setAttribute("placeholder", searchInput);
 	formEl.reset();
 	console.log(searchInput);
-
+	calendarSection.style.display = 'none';
+	
 	search(searchInput);
 
 
