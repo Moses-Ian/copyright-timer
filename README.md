@@ -24,7 +24,7 @@ No screenhots yet.
 ### APIs Used:
 * [Wikidata](https://www.wikidata.org/wiki/Special:ApiSandbox)
 * [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page)
-* [moment.js](https://momentjs.com/)
+* [Luxon](https://moment.github.io/luxon/#/)
 
 ## License
 
