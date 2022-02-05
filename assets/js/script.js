@@ -288,6 +288,7 @@ function updateSigninStatus(isSignedIn) {
 	if (isSignedIn) {
 		authorizeButton.style.display = 'none';
 		signoutButton.style.display = 'block';
+		addDate.style.display = 'block';
 
 	} else {
 		authorizeButton.style.display = 'block';
