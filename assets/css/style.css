@@ -1,15 +1,32 @@
 :root {
-	--bg: #ededf6;				/*light blue*/
-}
+  --background: #242834;   
+	--formInput: #1E252D;  
+	--highlight: #E31A6C;
+	--text: #FEFEFF;
+	--backgroundDarker: #1A242E;
 
 * {
 	/* padding: 0; */
 	/* margin: 0; */
 	/* border: 1px solid blue; */
+	color: var(--text);
+}
+
+body {
+	background-color: var(--background);
 }
 
 main {
 	display: flex;
+	
+}
+
+header {
+	background-color: var(--backgroundDarker);
+}
+
+#form-title h2 {
+	color: var(--text);
 }
 
 #search {
@@ -39,12 +56,11 @@ p {
 
 #banner {
 	display: flex;
-	justify-content: flex-start;
 }
 
 #calendar-gif {
 	height: 67px;
-	margin-left: 100px;
+	margin-left: 15px;
 }
 
 .menu {
