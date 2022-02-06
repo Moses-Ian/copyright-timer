@@ -1,53 +1,72 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css" crossorigin="anonymous">
-		<link rel="stylesheet" href="./assets/css/style.css" />
-	
-    <title>Copyright Timer</title>
-  </head>
-  <body>
-		<header id="banner">
-			<h1>Copyright Timer</h1>
-			<img id="calendar-gif"	src="./assets/images/icons8-calendar.gif" alt="Image of calendar">
-		</header>
-		
-		<main>
-			<section id="search">
-				<form>
-					<label id="form-title" for="media"><h2>Search for a piece of media:</h2></label>
-					<input id="form-input" name="media" id="media" type="text" placeholder="Superman"/>
-					<button id="form-btn" type="submit" class="button">Search</button>
-				</form>
-				<ul id="search-results">
-				</ul>
-				<div id="data">
-					<p id="data-p"></p>
-					<p id="expire-date"></p>
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css"
+		crossorigin="anonymous">
+	<link rel="stylesheet" href="./assets/css/style.css" />
+
+	<title>Copyright Timer</title>
+</head>
+
+<body>
+	<header id="banner">
+		<h1>Copyright Timer</h1>
+		<img id="calendar-gif" src="./assets/images/icons8-calendar.gif" alt="Image of calendar">
+	</header>
+
+	<main>
+		<section id="search">
+			<form>
+				<div class="grid-container">
+					<div class="grid-x grid-padding-x">
+						<div class="medium-6 cell">
+							<label id="form-title" for="media">
+								<h2>Search for a piece of media:</h2>
+							</label>
+							<input class="medium-6 cell" id="form-input" name="media" id="media" type="text"
+								placeholder="Superman" />
+							<button id="form-btn" type="submit" class="button">Search</button>
+						</div>
+					</div>
 				</div>
-			</section>
-			<section id="search-history">
-				<h2>Search History:</h2>
-				<ul></ul>
-			</section>
-			<section id="calendar" style="display: none;">
-				<button id="authorize_button" style="display: none;" class="button">Add Date to Google Calendar</button>
-				<button id="add_date_button" class="button">Add Date to Google Calendar</button>
-				<button id="signout_button" style="display: none;" class="button">Sign Out</button>
-				<pre id="content" style="white-space: pre-wrap;" class="button"></pre>
-			</section>
 
-			
 
-    <!-- JavaScript -->
-	<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js" crossorigin="anonymous"></script>
+
+
+
+			</form>
+			<ul id="search-results">
+			</ul>
+			<div id="data">
+				<p id="data-p"></p>
+				<p id="expire-date"></p>
+			</div>
+		</section>
+		<section id="search-history">
+			<h2>Search History:</h2>
+			<ul></ul>
+		</section>
+		<section id="calendar" style="display: none;">
+			<button id="authorize_button" style="display: none;" class="button">Add Date to Google Calendar</button>
+			<button id="add_date_button" class="button">Add Date to Google Calendar</button>
+			<button id="signout_button" style="display: none;" class="button">Sign Out</button>
+			<pre id="content" style="white-space: pre-wrap;" class="button"></pre>
+		</section>
+
+
+
+		<!-- JavaScript -->
+		<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js"
+			crossorigin="anonymous"></script>
 		<script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"
-        onreadystatechange="if (this.readyState === 'complete') this.onload()">
-        </script>
+			onreadystatechange="if (this.readyState === 'complete') this.onload()">
+			</script>
 		<script src="./assets/js/luxon.min.js"></script>
-		<script src="./assets/js/script.js"></script>		
-  </body>
+		<script src="./assets/js/script.js"></script>
+</body>
+
 </html>

@@ -1,13 +1,34 @@
-/* Once you start implementing Tailwind, you should probably delete everything in this file */
+:root {
+    --background: #242834;   
+	--formInput: #1E252D;  
+	--highlight: #E31A6C;
+	--text: #FEFEFF;
+	--backgroundDarker: #1A242E;
+}
+
 
 * {
 	/* padding: 0; */
 	/* margin: 0; */
 	/* border: 1px solid blue; */
+	color: var(--text);
+}
+
+body {
+	background-color: var(--background);
 }
 
 main {
 	display: flex;
+	
+}
+
+header {
+	background-color: var(--backgroundDarker);
+}
+
+#form-title h2 {
+	color: var(--text);
 }
 
 #search {
@@ -37,9 +58,9 @@ p {
 
 #banner {
 	display: flex;
-	justify-content: space-between;
 }
 
 #calendar-gif {
 	height: 67px;
+	margin-left: 15px;
 }
