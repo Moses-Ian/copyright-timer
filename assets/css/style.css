@@ -1,4 +1,6 @@
-/* Once you start implementing Tailwind, you should probably delete everything in this file */
+:root {
+	--bg: #ededf6;				/*light blue*/
+}
 
 * {
 	/* padding: 0; */
@@ -37,9 +39,27 @@ p {
 
 #banner {
 	display: flex;
-	justify-content: space-between;
+	justify-content: flex-start;
 }
 
 #calendar-gif {
 	height: 67px;
+	margin-left: 100px;
+}
+
+.menu {
+	background: var(--bg);
+}
+	
+.menu li {
+	background: var(--bg);
+}
+		
+.menu li:hover {
+	background: #000;
+}
+	
+.menu a {
+		color: #000;
+	}
 }
