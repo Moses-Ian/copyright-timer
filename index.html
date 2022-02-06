@@ -31,8 +31,19 @@
 				<h2>Search History:</h2>
 				<ul></ul>
 			</section>
+			<section id="calendar" style="display: none;">
+				<button id="authorize_button" style="display: none;">Add Date to Google Calendar</button>
+				<button id="add_date_button">Add Date to Google Calendar</button>
+				<button id="signout_button" style="display: none;">Sign Out</button>
+				<pre id="content" style="white-space: pre-wrap;"></pre>
+			</section>
+
+			
 
     <!-- JavaScript -->
+		<script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"
+        onreadystatechange="if (this.readyState === 'complete') this.onload()">
+        </script>
 		<script src="./assets/js/luxon.min.js"></script>
 		<script src="./assets/js/script.js"></script>		
   </body>
