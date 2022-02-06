@@ -34,3 +34,12 @@ p {
 	display: flex;
 	flex-direction: column;
 }
+
+#banner {
+	display: flex;
+	justify-content: space-between;
+}
+
+#calendar-gif {
+	height: 67px;
+}
