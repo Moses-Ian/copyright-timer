@@ -1,17 +1,41 @@
-/* Once you start implementing Tailwind, you should probably delete everything in this file */
+:root {
+	--background: #242834;
+	--formInput: #1E252D;
+	--highlight: #E31A6C;
+	--text: #FEFEFF;
+	--backgroundDarker: #1A242E;
+	--backgroundLighter: #343a4b;
+}
+
 
 * {
 	/* padding: 0; */
 	/* margin: 0; */
 	/* border: 1px solid blue; */
+	color: var(--text);
+}
+
+body {
+	background-color: var(--background);
 }
 
 main {
 	display: flex;
 }
 
-#search {
+main .idk {
 	flex: 4 0 0;
+}
+
+header {
+	background-color: var(--backgroundDarker);
+}
+
+#form-title h2 {
+	color: var(--text);
+}
+
+#search {
 }
 
 #search-history {
@@ -33,4 +57,77 @@ p {
 #calendar {
 	display: flex;
 	flex-direction: column;
+}
+
+#banner {
+	display: flex;
+}
+
+#calendar-img {
+	height: 67px;
+	margin-left: 15px;
+}
+
+#search-history {
+	position: relative;
+}
+
+#clear-history {
+	display: none;
+	position: absolute;
+	right: 0;
+}
+
+#search-history:hover #clear-history{
+	display: block;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+.menu {
+	background: var(--backgroundDarker);
+	width: 100%;
+	align-items: center;
+}
+
+.menu li {
+	background: var(--backgroundDarker);
+}
+
+.menu li:hover {
+	background: var(--backgroundLighter);
+}
+
+.menu li:first-child:hover {
+	background: var(--backgroundDarker);
+}
+
+.menu a {
+	color: #fff;
+}
+
+.menu .github {
+	margin-right: 10px;
+}
+
+#page-container {
+	position: relative;
+	min-height: 100vh;
+}
+
+#content-wrap {
+	padding-bottom: 2.5rem;
+	/* Footer height */
+}
+
+#footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 2.5rem;
+	/* Footer height */
 }

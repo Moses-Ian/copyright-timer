@@ -33,6 +33,7 @@ claimDictionary = {
 	"P3931": " copyright held by "
 };
 
+var bannerEl = document.querySelector("#banner");
 var formEl = document.querySelector("form");
 var formInputEl = document.querySelector("#form-input");
 var searchResultsEl = document.querySelector("#search-results");
@@ -42,6 +43,8 @@ var expireDateEl = document.querySelector("#expire-date");
 var historyEl = document.querySelector("#search-history ul");
 
 var DateTime = luxon.DateTime;	//alias
+
+const badDataBase = " is either not a copyrightable work or this data is incomplete. ☹ If you believe this to be in error and you would like to improve our site and Wikidata, you can <a href='mailto:imoses2@hotmail.com?subject=Copyright Timer' target='_blank'>email us</a> or <a href='https://www.wikidata.org/wiki/Wikidata:Tours' target='_blank'>improve Wikidata</a> yourself. 😉"
 
 
 //functions
@@ -100,8 +103,11 @@ function displayId(data) {
 
 	if (!claim) {
 		console.log("data is incomplete :(");
-		dataResult = "data is incomplete :(";
-		dataPEl.textContent = dataResult;
+		// dataResult = "data is incomplete :(";
+		expireDateEl.textContent =  "";
+		dataPEl.innerHTML = dataResult + badDataBase;
+		searchResultsEl.style.display = "none";
+		dataEl.style.display = "block";
 		return;
 	}
 
@@ -172,7 +178,7 @@ function displayCreators(data) {
 		//build the textContent
 		displayText = `This copyright expires on ${expiredDate.toLocaleString()}.`;
 	} else {
-		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 && s}.`;
+		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
 	}
 
 	dataPEl.textContent = dataResult;
@@ -245,6 +251,11 @@ function addHistoryEl(id, label) {
 	historyEl.appendChild(historyItemEl);
 }
 
+function clearHistory() {
+	localStorage.removeItem("history");
+	historyEl.innerHTML = "";		// no internal event handlers, so this is ok
+}
+
 
 //listeners
 //=====================================
@@ -276,10 +287,16 @@ historyEl.addEventListener("click", function (event) {
 	fetchId(id);
 });
 
+bannerEl.addEventListener("click", function (event) {
+	location.reload();
+});
+
+
+
 //body
 //=====================================
 // fetchId(id);
-fetchTitle(title);
+// fetchTitle(title);
 loadHistory();
 
 
