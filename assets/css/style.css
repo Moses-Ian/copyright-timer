@@ -75,12 +75,14 @@ footer {
 
 .menu {
 	background: var(--backgroundDarker);
+	width: 100%;
+	align-items: center;
 }
 	
 .menu li {
 	background: var(--backgroundDarker);
 }
-		
+
 .menu li:hover {
 	background: var(--backgroundLighter);
 }
@@ -93,6 +95,6 @@ footer {
 	color: #fff;
 }
 	
-.menu img {
+.menu .github {
 	margin-right: 10px;
 }
