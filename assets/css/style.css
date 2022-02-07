@@ -1,9 +1,10 @@
 :root {
-    --background: #242834;   
+  --background: #242834;   
 	--formInput: #1E252D;  
 	--highlight: #E31A6C;
 	--text: #FEFEFF;
 	--backgroundDarker: #1A242E;
+	--backgroundLighter: #343a4b;
 }
 
 
@@ -63,4 +64,34 @@ p {
 #calendar-gif {
 	height: 67px;
 	margin-left: 15px;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+.menu {
+	background: var(--backgroundDarker);
+}
+	
+.menu li {
+	background: var(--backgroundDarker);
+}
+		
+.menu li:hover {
+	background: var(--backgroundLighter);
+}
+
+.menu li:first-child:hover {
+	background: var(--backgroundDarker);
+}
+	
+.menu a {
+	color: #fff;
+}
+	
+.menu img {
+	margin-right: 10px;
 }
