@@ -172,7 +172,7 @@ function displayCreators(data) {
 		//build the textContent
 		displayText = `This copyright expires on ${expiredDate.toLocaleString()}.`;
 	} else {
-		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 && s}.`;
+		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
 	}
 
 	dataPEl.textContent = dataResult;
