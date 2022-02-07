@@ -35,7 +35,19 @@ header {
 	color: var(--text);
 }
 
+#search-section {
+	margin: auto;
+	width: 100%;
+}
+
 #search {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+#results-section {
+	
 }
 
 #search-history {
