@@ -21,7 +21,11 @@ body {
 
 main {
 	display: flex;
+}
 
+main .idk {
+	flex: 4 0 0;
+	
 }
 
 header {
@@ -33,7 +37,6 @@ header {
 }
 
 #search {
-	flex: 4 0 0;
 }
 
 #search-history {
@@ -71,7 +74,7 @@ p {
 }
 
 #clear-history {
-	display: none;
+	/* display: none; */
 	position: absolute;
 	right: 0;
 }
