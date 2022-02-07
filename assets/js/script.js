@@ -143,6 +143,8 @@ function displayCreators(data) {
 	expiredDateArr = [];
 	copyrightHolderArr = [];
 	for (i = 0; i < idArr.length; i++) {
+		if (i == idArr.length-1)
+			dataResult = dataResult.concat('and ');
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
 		dataResult = dataResult.concat(item.labels.en.value);
@@ -154,7 +156,7 @@ function displayCreators(data) {
 			var time = claim[0].mainsnak.datavalue.value.time
 			time = DateTime.fromISO(time.substring(1));
 			console.log(time.toLocaleString());
-			dataResult = dataResult.concat(` who died on ${time.toLocaleString()} `);
+			dataResult = dataResult.concat(` (who died on ${time.toLocaleString()}) `);
 			time = time.plus({ 'year': 70 });
 			console.log(time.toLocaleString());
 			expiredDateArr.push(time);
@@ -163,10 +165,12 @@ function displayCreators(data) {
 		}
 		else {	//still alive, or data is incomplete
 			console.log("who is still alive")
-			dataResult = dataResult.concat(" who is still alive ");
+			dataResult = dataResult.concat(" (who is still alive) ");
 		}
 		searchResultsEl.style.display = "none";
 		dataEl.style.display = "block";
+		if (i == idArr.length-1)
+			dataResult = dataResult.concat('.');
 	}
 	expiredDate = null;
 	var displayText;
