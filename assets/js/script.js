@@ -251,6 +251,11 @@ function addHistoryEl(id, label) {
 	historyEl.appendChild(historyItemEl);
 }
 
+function clearHistory() {
+	localStorage.removeItem("history");
+	historyEl.innerHTML = "";		// no internal event handlers, so this is ok
+}
+
 
 //listeners
 //=====================================

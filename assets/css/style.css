@@ -66,6 +66,20 @@ p {
 	margin-left: 15px;
 }
 
+#search-history {
+	position: relative;
+}
+
+#clear-history {
+	display: none;
+	position: absolute;
+	right: 0;
+}
+
+#search-history:hover #clear-history{
+	display: block;
+}
+
 footer {
 	position: absolute;
 	bottom: 0;
