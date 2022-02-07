@@ -7,6 +7,7 @@
 	--backgroundLighter: #343a4b;
 }
 
+
 * {
 	/* padding: 0; */
 	/* margin: 0; */
@@ -25,8 +26,6 @@ main {
 
 header {
 	background-color: var(--backgroundDarker);
-	padding-top: 5px;
-	padding-left: 5px;
 }
 
 #form-title h2 {
@@ -62,7 +61,7 @@ p {
 	display: flex;
 }
 
-#calendar-img {
+#calendar-gif {
 	height: 67px;
 	margin-left: 15px;
 }
