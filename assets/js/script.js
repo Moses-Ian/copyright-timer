@@ -33,6 +33,7 @@ claimDictionary = {
 	"P3931": " copyright held by "
 };
 
+var bannerEl = document.querySelector("#banner");
 var formEl = document.querySelector("form");
 var formInputEl = document.querySelector("#form-input");
 var searchResultsEl = document.querySelector("#search-results");
@@ -276,10 +277,16 @@ historyEl.addEventListener("click", function (event) {
 	fetchId(id);
 });
 
+bannerEl.addEventListener("click", function (event) {
+	location.reload();
+});
+
+
+
 //body
 //=====================================
 // fetchId(id);
-fetchTitle(title);
+// fetchTitle(title);
 loadHistory();
 
 
