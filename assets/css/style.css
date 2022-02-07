@@ -74,7 +74,7 @@ p {
 }
 
 #clear-history {
-	/* display: none; */
+	display: none;
 	position: absolute;
 	right: 0;
 }
