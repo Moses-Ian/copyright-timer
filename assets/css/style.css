@@ -114,6 +114,12 @@ footer {
 
 .menu .github {
 	margin-right: 10px;
+	width: 0px;
+	transition: width .5s;
+}
+
+.menu li:hover .github {
+	width: 50px;
 }
 
 #page-container {
