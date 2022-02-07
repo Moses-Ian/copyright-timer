@@ -25,7 +25,6 @@ main {
 
 main .idk {
 	flex: 4 0 0;
-	
 }
 
 header {
@@ -74,7 +73,7 @@ p {
 }
 
 #clear-history {
-	/* display: none; */
+	display: none;
 	position: absolute;
 	right: 0;
 }
