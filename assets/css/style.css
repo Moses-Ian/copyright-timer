@@ -4,6 +4,9 @@
 	--highlight: #E31A6C;
 	--text: #FEFEFF;
 	--backgroundDarker: #1A242E;
+	--backgroundLighter: #343a4b;
+}
+
 
 * {
 	/* padding: 0; */
@@ -63,19 +66,32 @@ p {
 	margin-left: 15px;
 }
 
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
 .menu {
-	background: var(--bg);
+	background: var(--backgroundDarker);
 }
 	
 .menu li {
-	background: var(--bg);
+	background: var(--backgroundDarker);
 }
 		
 .menu li:hover {
-	background: #000;
+	background: var(--backgroundLighter);
+}
+
+.menu li:first-child:hover {
+	background: var(--backgroundDarker);
 }
 	
 .menu a {
-		color: #000;
-	}
+	color: #fff;
+}
+	
+.menu img {
+	margin-right: 10px;
 }
