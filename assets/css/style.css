@@ -2,6 +2,7 @@
 	--background: #242834;
 	--formInput: #1E252D;
 	--highlight: #E31A6C;
+	--highlightDarker: #b71556;
 	--text: #FEFEFF;
 	--backgroundDarker: #1A242E;
 	--backgroundLighter: #343a4b;
@@ -21,14 +22,24 @@ body {
 
 main {
 	display: flex;
+	justify-content: space-between;
 }
 
-main .idk {
-	flex: 4 0 0;
+#left-margin {
+	flex: 1 0 0;
+}
+
+#search {
+	flex: 3 0 0;
 }
 
 header {
 	background-color: var(--backgroundDarker);
+}
+
+ul {
+	list-style: none;
+	margin: 0;
 }
 
 #form-title h2 {
@@ -41,18 +52,14 @@ header {
 }
 
 #search {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	margin-left: 50px;
+	margin-right: 50px;
 }
 
 #search-results {
-    position: relative;
+  position: relative;
 	left: -100%;
 	width: 100%;
-    border: 1px solid black;
-	margin-left: 100px;
 	transition: left 1s;
 }
 
