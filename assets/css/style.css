@@ -140,12 +140,10 @@ p {
 	transition: opacity 3s;
 }
 
-@media screen and (-webkit-max-device-pixel-ratio: 1) { footer {
+footer {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-}
-
 }
 
 
@@ -191,13 +189,13 @@ p {
 	/* Footer height */
 }
 
-@media screen and (max-width: 39.9375em) { #footer {
+#footer {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
 	height: 2.5rem;
 	/* Footer height */
 }
-}
+
 
 
