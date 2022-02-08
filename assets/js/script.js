@@ -25,6 +25,7 @@ var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
 var calendarSection = document.getElementById('calendar');
 var addDate = document.getElementById('add_date_button');
+var openEvent = document.getElementById('open-event');
 
 
 claimDictionary = {
@@ -409,6 +410,8 @@ addDate.addEventListener('click', function addEvent() {
 
 	request.execute(function (event) {
 		appendPre('Event created: ' + event.htmlLink);
+	openEvent.style.display = 'block';
+
 	});
 	signoutButton.style.display = 'none'
 	addDate.style.display = 'none'
