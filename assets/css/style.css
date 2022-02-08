@@ -46,24 +46,14 @@ header {
 	justify-content: center;
 	align-items: center;
 }
-.wrapper {
+
+#search-results {
     position: relative;
-    overflow: hidden;
-	width: 300px;
-	height: 500px;
+	left: -100%;
+	width: 100%;
     border: 1px solid black;
-}
-
-#slide {
-    position: absolute;
-    left: -300px;
-    
-    transition: 1s;
-}
-
-.wrapper:hover #slide {
-    transition: 1s;
-    left: 0;
+	margin-left: 100px;
+	transition: left 1s;
 }
 
 #search-history {
