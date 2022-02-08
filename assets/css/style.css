@@ -58,7 +58,7 @@ ul {
 }
 
 #search-results {
-  position: relative;
+	position: relative;
 	left: -100%;
 	width: 100%;
 	transition: left 1s;
@@ -135,7 +135,7 @@ p {
 	transition: opacity 0.5s;
 }
 
-#search-history:hover #clear-history{
+#search-history:hover #clear-history {
 	opacity: 100%;
 	transition: opacity 3s;
 }
@@ -186,6 +186,21 @@ footer {
 #content-wrap {
 	padding-bottom: 3rem;
 	/* Footer height */
+}
+
+#open-event object {
+	height: 45px;
+	width: 40px;
+	justify-content: center;
+	align-items: center;
+}
+
+
+#open-event {
+	padding-top: 0;
+	padding-left: 0;
+	
+	display: flex;
 }
 
 #footer {
