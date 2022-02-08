@@ -166,11 +166,11 @@ function displayCreators(data) {
 			dataResult = dataResult.concat(" who is still alive ");
 		}
 
-		// debugger;
+		
 		
 		searchResultsEl.style.display = "none";
-		searchResultsEl.style.left = '-100%';
 
+		searchResultsEl.style.left = '-100%';
 		dataEl.style.display = "block";
 	}
 	expiredDate = null;
@@ -231,8 +231,10 @@ function displaySearchResults(data) {
 	}
 
 	searchResultsEl.style.display = "block";
-	searchResultsEl.style.left = '0';
-
+	
+	setTimeout (function (){
+		searchResultsEl.style.left = '0';
+	}, 0)
 
 }
 
