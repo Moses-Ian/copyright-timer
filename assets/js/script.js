@@ -429,9 +429,19 @@ foundation.util.keyboard.js
 foundation.util.box.js
 foundation.util.touch.js
 foundation.util.triggers.js
+Foundation.MediaQuery.current // => 'small', 'medium', etc.
+Foundation.MediaQuery.is('medium') // => True for "medium" or larger
+// ↑ True for "medium" or larger (by default)
+Foundation.MediaQuery.is('medium up');
+Foundation.MediaQuery.atLeast('medium');
 
+// → True for "medium" only
+Foundation.MediaQuery.is('medium only');
+Foundation.MediaQuery.only('medium');
 
-
+// ↓ True for "medium" or smaller
+Foundation.MediaQuery.is('medium down');
+Foundation.MediaQuery.upTo('medium');
 
 
 
