@@ -417,6 +417,7 @@ addDate.addEventListener('click', function addEvent() {
 		
 	openEvent.style.display = 'block';
 	openEvent.setAttribute('onclick', "location.href='" + event.htmlLink + "';");
+	openEvent.setAttribute('target', "_blank");
 	// <button class="button" onclick="location.href='https://google.com';" ;">Open Event</button>
 
 	});
