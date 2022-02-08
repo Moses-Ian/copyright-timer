@@ -421,6 +421,14 @@ addDate.addEventListener('click', function addEvent() {
 });
 
 
+// Java plugins for dropdown menu
+
+foundation.core.js
+foundation.dropdown.js
+foundation.util.keyboard.js
+foundation.util.box.js
+foundation.util.touch.js
+foundation.util.triggers.js
 
 
 
