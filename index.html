@@ -21,34 +21,26 @@
 			</header>
 
 			<main>
-				<div class="idk">
-					<section id="search">
-						<form>
-							<div class="grid-container">
-								<div class="grid-x grid-padding-x">
-									<div id="search-section" class="medium-6 cell">
-										<label id="form-title" for="media">
-											<h2>Search for a piece of media:</h2>
-										</label>
-										<input class="medium-6 cell" id="form-input" name="media" id="media" type="text"
-											placeholder="Superman" />
-										<button id="form-btn" type="submit" class="button">Search</button>
-									</div>
-								</div>
-							</div>
+				<section id="left-margin">
+				</section>
+				<section id="search">
+					<form>
+						<label id="form-title" for="media">
+							<h2>Search for a Piece of Media:</h2>
+						</label>
+						<input id="form-input" name="media" id="media" type="text"
+							placeholder="Superman" />
+						<button id="form-btn" type="submit" class="button">Search</button>
+					</form>
 
+					<ul id="search-results">
+					</ul>
 
-						</form>
+					<div id="data">
+						<p id="data-p"></p>
+						<p id="expire-date"></p>
+					</div>
 
-						<ul id="search-results">
-						</ul>
-
-						<div id="data">
-							<p id="data-p"></p>
-							<p id="expire-date"></p>
-						</div>
-
-					</section>
 					<section id="calendar" style="display: none;">
 						<button id="authorize_button" style="display: none;" class="button">Add Date to Google
 							Calendar</button>
@@ -57,7 +49,7 @@
 						<button id="open-event" class="button" onclick="location.href='event.htmlLink';" value="Go to Google" style="display: none;"></button>
 						<pre id="content" style="white-space: pre-wrap;"></pre>
 					</section>
-				</div>
+				</section>
 				<section id="search-history">
 					<h2>Search History:</h2>
 					<button id="clear-history" class="button" onclick="clearHistory()">X Clear History</button>
