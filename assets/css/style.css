@@ -112,16 +112,25 @@ p {
 
 #banner {
 	display: flex;
+	align-items: center;
 }
 
 #banner h1 {
 	margin-left: 50px;
+	flex: 0 0 auto;
 }
 
-#calendar-img {
+#banner-img {
 	height: 67px;
 	margin-left: 15px;
-	margin-top: 10px;
+	flex: 0 0 auto;
+}
+
+#banner p {
+	flex: 1 0 0;
+	text-align: right;
+	margin-right: 50px;
+	font-size: 22px;
 }
 
 #search-history {
