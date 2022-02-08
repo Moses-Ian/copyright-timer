@@ -416,9 +416,9 @@ addDate.addEventListener('click', function addEvent() {
 	request.execute(function (event) {
 		
 	openEvent.style.display = 'block';
-	openEvent.setAttribute('onclick', "location.href='" + event.htmlLink + "';");
+	openEvent.setAttribute('onclick', "window.open('" + event.htmlLink + "','_blank')");
 	openEvent.setAttribute('target', "_blank");
-	// <button class="button" onclick="location.href='https://google.com';" ;">Open Event</button>
+	// onclick=" window.open('http://google.com','_blank')"
 
 	});
 	signoutButton.style.display = 'none'
