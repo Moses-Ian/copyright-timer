@@ -25,6 +25,7 @@ var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
 var calendarSection = document.getElementById('calendar');
 var addDate = document.getElementById('add_date_button');
+var openEvent = document.getElementById('open-event');
 
 
 claimDictionary = {
@@ -413,7 +414,12 @@ addDate.addEventListener('click', function addEvent() {
 	});
 
 	request.execute(function (event) {
-		appendPre('Event created: ' + event.htmlLink);
+		
+	openEvent.style.display = 'block';
+	openEvent.setAttribute('onclick', "window.open('" + event.htmlLink + "','_blank')");
+	openEvent.setAttribute('target', "_blank");
+	// onclick=" window.open('http://google.com','_blank')"
+
 	});
 	signoutButton.style.display = 'none'
 	addDate.style.display = 'none'
