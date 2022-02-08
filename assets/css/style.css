@@ -150,11 +150,14 @@ p {
 	transition: opacity 3s;
 }
 
-footer {
+@media screen and (-webkit-max-device-pixel-ratio: 1) { footer {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
 }
+
+}
+
 
 .menu {
 	background: var(--backgroundDarker);
@@ -205,3 +208,6 @@ footer {
 	height: 2.5rem;
 	/* Footer height */
 }
+
+
+
