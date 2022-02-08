@@ -44,7 +44,7 @@ var historyEl = document.querySelector("#search-history ul");
 
 var DateTime = luxon.DateTime;	//alias
 
-const badDataBase = " is either not a copyrightable work or this data is incomplete. ☹ If you believe this to be in error and you would like to improve our site and Wikidata, you can <a href='mailto:imoses2@hotmail.com?subject=Copyright Timer' target='_blank'>email us</a> or <a href='https://www.wikidata.org/wiki/Wikidata:Tours' target='_blank'>improve Wikidata</a> yourself. 😉"
+const badDataBase = " is either not a copyrightable work or this data is incomplete. If you believe this to be in error and you would like to improve our site and Wikidata, you can <a href='mailto:imoses2@hotmail.com?subject=Copyright Timer' target='_blank'>email us</a> or <a href='https://www.wikidata.org/wiki/Wikidata:Tours' target='_blank'>improve Wikidata</a> yourself."
 
 
 //functions
