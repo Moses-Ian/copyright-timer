@@ -92,6 +92,11 @@ ul {
 	display: none;
 }
 
+.expired-date {
+	color: var(--primary);
+	text-shadow: 0 0 1px var(--primary);
+}
+
 h3 {
 	margin-bottom: 5px;
 }
@@ -109,9 +114,14 @@ p {
 	display: flex;
 }
 
+#banner h1 {
+	margin-left: 50px;
+}
+
 #calendar-img {
 	height: 67px;
 	margin-left: 15px;
+	margin-top: 10px;
 }
 
 #search-history {
@@ -174,7 +184,7 @@ footer {
 }
 
 #content-wrap {
-	padding-bottom: 2.5rem;
+	padding-bottom: 3rem;
 	/* Footer height */
 }
 

@@ -185,13 +185,13 @@ function displayCreators(data) {
 			if (expiredDate === null || expiredDateArr[i] > expiredDate)
 				expiredDate = expiredDateArr[i];
 		//build the textContent
-		displayText = `This copyright expires on ${expiredDate.toLocaleString()}.`;
+		displayText = `This copyright expires on <span class="expired-date">${expiredDate.toLocaleString()}</span>.`;
 	} else {
 		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
 	}
 
 	dataPEl.textContent = dataResult;
-	expireDateEl.textContent = displayText;
+	expireDateEl.innerHTML = displayText;
 	searchResultsEl.style.left = '-100%';
 	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
