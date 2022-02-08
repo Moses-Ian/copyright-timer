@@ -165,7 +165,12 @@ function displayCreators(data) {
 			console.log("who is still alive")
 			dataResult = dataResult.concat(" who is still alive ");
 		}
+
+		// debugger;
+		
 		searchResultsEl.style.display = "none";
+		searchResultsEl.style.left = '-100%';
+
 		dataEl.style.display = "block";
 	}
 	expiredDate = null;
@@ -183,6 +188,7 @@ function displayCreators(data) {
 
 	dataPEl.textContent = dataResult;
 	expireDateEl.textContent = displayText;
+	searchResultsEl.style.left = '-100%';
 	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
 }
@@ -216,6 +222,7 @@ function displaySearchResults(data) {
 		liEl.dataset.itemId = data.search[i].id;
 		h3El.textContent = data.search[i].label;
 		pEl.textContent = data.search[i].description;
+		
 
 		liEl.appendChild(h3El);
 		liEl.appendChild(pEl);
@@ -224,6 +231,8 @@ function displaySearchResults(data) {
 	}
 
 	searchResultsEl.style.display = "block";
+	searchResultsEl.style.left = '0';
+
 
 }
 
