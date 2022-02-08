@@ -191,13 +191,13 @@ p {
 	/* Footer height */
 }
 
-#footer {
+@media screen and (max-width: 39.9375em) { #footer {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
 	height: 2.5rem;
 	/* Footer height */
 }
-
+}
 
 
