@@ -416,6 +416,8 @@ addDate.addEventListener('click', function addEvent() {
 	request.execute(function (event) {
 		appendPre('Event created: ' + event.htmlLink);
 	openEvent.style.display = 'block';
+	openEvent.setAttribute('onclick', 'location.href=' + event.htmlLink + ';');
+	// onclick="location.href='event.htmlLink';"
 
 	});
 	signoutButton.style.display = 'none'
