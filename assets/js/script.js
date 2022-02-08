@@ -44,7 +44,7 @@ var historyEl = document.querySelector("#search-history ul");
 
 var DateTime = luxon.DateTime;	//alias
 
-const badDataBase = " is either not a copyrightable work or this data is incomplete. ☹ If you believe this to be in error and you would like to improve our site and Wikidata, you can <a href='mailto:imoses2@hotmail.com?subject=Copyright Timer' target='_blank'>email us</a> or <a href='https://www.wikidata.org/wiki/Wikidata:Tours' target='_blank'>improve Wikidata</a> yourself. 😉"
+const badDataBase = " is either not a copyrightable work or this data is incomplete. If you believe this to be in error and you would like to improve our site and Wikidata, you can <a href='mailto:imoses2@hotmail.com?subject=Copyright Timer' target='_blank'>email us</a> or <a href='https://www.wikidata.org/wiki/Wikidata:Tours' target='_blank'>improve Wikidata</a> yourself."
 
 
 //functions
@@ -143,6 +143,8 @@ function displayCreators(data) {
 	expiredDateArr = [];
 	copyrightHolderArr = [];
 	for (i = 0; i < idArr.length; i++) {
+		if (i == idArr.length-1)
+			dataResult = dataResult.concat('and ');
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
 		dataResult = dataResult.concat(item.labels.en.value);
@@ -154,7 +156,7 @@ function displayCreators(data) {
 			var time = claim[0].mainsnak.datavalue.value.time
 			time = DateTime.fromISO(time.substring(1));
 			console.log(time.toLocaleString());
-			dataResult = dataResult.concat(` who died on ${time.toLocaleString()} `);
+			dataResult = dataResult.concat(` (who died on ${time.toLocaleString()}) `);
 			time = time.plus({ 'year': 70 });
 			console.log(time.toLocaleString());
 			expiredDateArr.push(time);
@@ -163,10 +165,17 @@ function displayCreators(data) {
 		}
 		else {	//still alive, or data is incomplete
 			console.log("who is still alive")
-			dataResult = dataResult.concat(" who is still alive ");
+			dataResult = dataResult.concat(" (who is still alive) ");
 		}
+
+		
+		
 		searchResultsEl.style.display = "none";
+
+		searchResultsEl.style.left = '-100%';
 		dataEl.style.display = "block";
+		if (i == idArr.length-1)
+			dataResult = dataResult.concat('.');
 	}
 	expiredDate = null;
 	var displayText;
@@ -183,6 +192,7 @@ function displayCreators(data) {
 
 	dataPEl.textContent = dataResult;
 	expireDateEl.textContent = displayText;
+	searchResultsEl.style.left = '-100%';
 	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
 }
@@ -216,6 +226,7 @@ function displaySearchResults(data) {
 		liEl.dataset.itemId = data.search[i].id;
 		h3El.textContent = data.search[i].label;
 		pEl.textContent = data.search[i].description;
+		
 
 		liEl.appendChild(h3El);
 		liEl.appendChild(pEl);
@@ -224,6 +235,10 @@ function displaySearchResults(data) {
 	}
 
 	searchResultsEl.style.display = "block";
+	
+	setTimeout (function (){
+		searchResultsEl.style.left = '0';
+	}, 0)
 
 }
 
