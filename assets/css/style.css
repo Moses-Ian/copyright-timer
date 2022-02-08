@@ -6,6 +6,7 @@
 	--text: #FEFEFF;
 	--backgroundDarker: #1A242E;
 	--backgroundLighter: #343a4b;
+	--primary: #1778BB;
 }
 
 
@@ -61,6 +62,26 @@ ul {
 	left: -100%;
 	width: 100%;
 	transition: left 1s;
+}
+
+#search-results li {
+	padding: 5px;
+	border-radius: 5px;
+	transition: background-color .5s;
+}
+
+#search-results li:hover {
+	background-color: var(--backgroundDarker);
+}
+
+#search-results h3 {
+	color: var(--primary);
+	text-shadow: 0px 0px 2px var(--primary);
+}
+
+#search-results p {
+	padding-left: 30px;
+	text-transform: capitalize;
 }
 
 #search-history {

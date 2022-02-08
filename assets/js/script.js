@@ -226,6 +226,7 @@ function displaySearchResults(data) {
 		liEl.dataset.itemId = data.search[i].id;
 		h3El.textContent = data.search[i].label;
 		pEl.textContent = data.search[i].description;
+		// h3El.classList.add("label");
 		
 
 		liEl.appendChild(h3El);
