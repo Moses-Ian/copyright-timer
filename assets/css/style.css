@@ -24,14 +24,18 @@ body {
 main {
 	display: flex;
 	justify-content: space-between;
+	position: relative;
+	flex-wrap: wrap;
 }
 
 #left-margin {
 	flex: 1 0 0;
+	border: 1px solid var(--background);
+	/* that's a load-bearing invisible border */
 }
 
-#search {
-	flex: 3 0 0;
+#right-margin {
+	flex: 0 0 0;
 }
 
 header {
@@ -43,6 +47,12 @@ ul {
 	margin: 0;
 }
 
+#search {
+	flex: 3 0 0;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
 #form-title h2 {
 	color: var(--text);
 }
@@ -50,11 +60,6 @@ ul {
 #search-section {
 	margin: auto;
 	width: 100%;
-}
-
-#search {
-	margin-left: 50px;
-	margin-right: 50px;
 }
 
 #search-results {
@@ -84,10 +89,6 @@ ul {
 	text-transform: capitalize;
 }
 
-#search-history {
-	flex: 1 0 0;
-}
-
 #data {
 	display: none;
 }
@@ -113,7 +114,9 @@ p {
 #banner {
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	margin-bottom: 30px;
+	position: relative;
 }
 
 #banner h1 {
@@ -132,9 +135,11 @@ p {
 	text-align: right;
 	margin-right: 50px;
 	font-size: 22px;
+	margin-left: auto;
 }
 
 #search-history {
+	flex: 1 0 0;
 	position: relative;
 }
 
@@ -148,6 +153,10 @@ p {
 #search-history:hover #clear-history {
 	opacity: 100%;
 	transition: opacity 3s;
+}
+
+#show-history {
+	display: none;
 }
 
 footer {
@@ -186,7 +195,12 @@ footer {
 }
 
 .menu li:hover .github {
-	width: 50px;
+	width: 40px;
+}
+
+#wikidata {
+	min-width: 150px;
+	max-width: 200px;
 }
 
 #page-container {
@@ -221,3 +235,165 @@ footer {
 	height: 2.5rem;
 	/* Footer height */
 }
+
+/* media queries */
+/* above this: foundation would be very-large */
+
+/* foundation-large */
+@media screen and (max-width: 1200px) {
+	#banner h1 {
+		font-size: 35px;
+		margin-left: 25px;
+	}
+	
+	#banner-img {
+		height: 45px;
+	}
+	
+	#banner p {
+		font-size: 18px;
+		margin-right: 25px;
+	}
+	
+	.menu .github {
+		margin-right: 5px;
+	}
+<<<<<<< HEAD
+
+	.menu li:hover .github {
+		width: 25px;
+	}
+	
+	.menu li {
+		font-size: 16px;
+	}
+
+}
+
+/* foundation-medium */
+@media screen and (max-width: 1024px) {
+	#banner h1 {
+		font-size: 30px;
+		margin-left: 15px;
+	}
+	
+	#banner-img {
+		height: 35px;
+		width: 35px;
+	}
+	
+	#banner p {
+		font-size: 16px;
+		margin-right: 15px;
+	}
+	
+	#search {
+		margin-left: 25px;
+		margin-right: 25px;
+	}
+	
+	h2 {
+		font-size: 30px;
+	}
+	
+	#search-history {
+		opacity: 0;
+		margin-top: 30px;
+	}
+	
+	#clear-history {
+		opacity: 1;
+		font-size: 14px;
+		position: default;
+		left: 0;
+		right: 15px;
+	}
+	
+	#show-history {
+		width: 50px;
+		height: 50px;
+		background-color: black;
+		position: absolute;
+		bottom: -50px;
+		right: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 1;
+	}
+	
+	#arrow {
+		width: 40%;
+		height: 40%;
+		border-bottom: 4px solid white;
+		border-right: 4px solid white;
+		transform: rotate(135deg);
+		display: block;
+		margin-left: 10px;
+	}
+	
+	.menu .github {
+		display: block;
+		width: 25px;
+		margin-right: auto;
+		margin-left: auto;
+		margin-bottom: 2px;
+	}
+
+	.menu li {
+		font-size: 16px;
+	}
+}
+
+/* foundation-small */
+@media screen and (max-width: 640px) {
+	#banner {
+		flex-wrap: wrap;
+		justify-content: center;
+		margin-bottom: 0;
+	}
+	
+	#banner h1 {
+		flex-grow: 0;
+		text-align: right;
+		margin-left: auto;
+	}
+	
+	#banner-img {
+		flex-grow: 0;
+		margin-right: auto;
+	}
+	
+	#banner p {
+		flex-grow: 1;
+		flex-basis: 100%;
+		text-align: center;
+	}
+	
+	#search {
+		flex: 5 0 0;
+		margin-left: 0px;
+		margin-right: 0px;
+	}
+	
+	#search-history {
+		order: -1;
+		flex-grow: 1;
+		flex-basis: 100%;
+		height: 0;
+		text-align: center;
+	}
+	
+	#clear-history {
+		position: absolute;
+		left: 0;
+		right: auto;
+		top: 0;
+	}
+	
+	#right-margin {
+		flex-grow: 1;
+	}
+}
+
+/* smallest reasonable size: 360px */

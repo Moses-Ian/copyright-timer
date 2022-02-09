@@ -19,6 +19,7 @@
 				<h1>Copyright Timer</h1>
 				<object id="banner-img" data="./assets/images/calendar.svg"> </object>
 				<p>Check whether works of art are in the public domain!</p>
+				<div id="show-history"><div id="arrow"></div></div>
 			</header>
 
 			<main>
@@ -52,8 +53,10 @@
 				</section>
 				<section id="search-history">
 					<h2>Search History:</h2>
-					<button id="clear-history" class="button" onclick="clearHistory()">X Clear History</button>
 					<ul></ul>
+					<button id="clear-history" class="button" onclick="clearHistory()">X Clear History</button>
+				</section>
+				<section id="right-margin">
 				</section>
 				<!-- <button class="button" onclick="location.href='https://google.com';" ;">Open Event</button> -->
 				
@@ -72,7 +75,7 @@
 							src="./assets/images/icons8-github.svg" /><span>Jeffrey Koon</span></a></li>
 				<li><a href="https://github.com/Moses-Ian"><img class="github"
 							src="./assets/images/icons8-github.svg" /><span>Ian Moses</span></a></li>
-				<li><a href="https://www.wikidata.org/wiki/Wikidata:Main_Page"><img
+				<li><a href="https://www.wikidata.org/wiki/Wikidata:Main_Page"><img id="wikidata"
 							src="./assets/images/Wikidata.svg" /></a></li>
 			</ul>
 		</footer>

@@ -42,6 +42,9 @@ var dataEl = document.querySelector("#data");
 var dataPEl = document.querySelector("#data-p");
 var expireDateEl = document.querySelector("#expire-date");
 var historyEl = document.querySelector("#search-history ul");
+var showHistoryEl = document.querySelector("#show-history");
+var arrowEl = document.querySelector("#arrow");
+var historyContainerEl = document.querySelector("#search-history");
 
 var DateTime = luxon.DateTime;	//alias
 
@@ -273,6 +276,27 @@ function clearHistory() {
 	historyEl.innerHTML = "";		// no internal event handlers, so this is ok
 }
 
+function peakHistory() {
+	if (window.innerWidth > 1024)
+		return;
+	if (historyContainerEl.style.opacity == '0') {
+		historyContainerEl.style.opacity = '1';
+		historyContainerEl.style.flexGrow = '2';
+		arrowEl.style.transform = "rotate(315deg)";
+		arrowEl.style.marginLeft = "-10px";
+		if (window.innerWidth > 640)
+			return;
+		historyContainerEl.style.height = 'auto';
+	} else {
+		historyContainerEl.style.opacity = '0';
+		historyContainerEl.style.flexGrow = '1';
+		arrowEl.style.transform = "rotate(135deg)";
+		arrowEl.style.marginLeft = "10px";
+		if (window.innerWidth > 640)
+			return;
+		historyContainerEl.style.height = '0';
+	}
+}
 
 //listeners
 //=====================================
@@ -298,6 +322,8 @@ searchResultsEl.addEventListener("click", function (event) {
 	addToHistory(targetLiEl.querySelector("h3").textContent);
 });
 
+showHistoryEl.addEventListener("click", peakHistory);
+
 historyEl.addEventListener("click", function (event) {
 	var targetLiEl = event.target.closest("li");
 	id = targetLiEl.dataset.itemId;
@@ -305,7 +331,9 @@ historyEl.addEventListener("click", function (event) {
 });
 
 bannerEl.addEventListener("click", function (event) {
-	location.reload();
+	target = event.target;
+	if(target.tagName == 'H1')
+		location.reload();
 });
 
 
