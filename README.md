@@ -10,9 +10,8 @@ You can access the deployed website here:
 <br>
 https://moses-ian.github.io/copyright-timer
 
-## Screenshots
 
-No screenhots yet.
+![Website Screenshot](assets/images/website-screenshot.png)
 
 ## Credits
 
