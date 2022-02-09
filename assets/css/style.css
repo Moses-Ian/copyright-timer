@@ -186,7 +186,11 @@ footer {
 }
 
 .menu li:hover .github {
-	width: 50px;
+	width: 40px;
+}
+
+#wikidata {
+	min-width: 150px;
 }
 
 #page-container {
@@ -221,3 +225,46 @@ footer {
 	height: 2.5rem;
 	/* Footer height */
 }
+
+/* media queries */
+/* above this: foundation would be very-large */
+
+/* foundation-large */
+@media screen and (max-width: 1200px) {
+	#banner h1 {
+		font-size: 35px;
+		margin-left: 25px;
+	}
+	
+	#banner-img {
+		height: 45px;
+	}
+	
+	#banner p {
+		font-size: 18px;
+		margin-right: 25px;
+	}
+	
+	.menu .github {
+		margin-right: 5px;
+	}
+
+	.menu li:hover .github {
+		width: 25px;
+	}
+	
+	.menu li {
+		font-size: 16px;
+	}
+
+}
+
+/* foundation-medium */
+@media screen and (max-width: 1024px) {
+}
+
+/* foundation-small */
+@media screen and (max-width: 640px) {
+}
+
+/* smallest reasonable size: 360px */
