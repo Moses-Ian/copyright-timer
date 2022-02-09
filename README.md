@@ -10,15 +10,15 @@ You can access the deployed website here:
 <br>
 https://moses-ian.github.io/copyright-timer
 
-## Screenshots
 
-No screenhots yet.
+![Website Screenshot](assets/images/website-screenshot.png)
 
 ## Credits
 
 ### Creators:
-* [Rich Arse](https://github.com/raarce118)
+* [Rich Arce](https://github.com/raarce118)
 * [David Griffin](https://github.com/DavidTJGriffin)
+* [Jeffrey Koon](https://github.com/OfficialBeez)
 * [Ian Moses](https://github.com/Moses-Ian)
 
 ### APIs Used:

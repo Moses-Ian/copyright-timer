@@ -1,50 +1,92 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="stylesheet" href="./assets/css/style.css" />
-	
-    <title>Copyright Timer</title>
-  </head>
-  <body>
-		<header>
-			<h1>Copyright Timer</h1>
-		</header>
-		
-		<main>
-			<section id="search">
-				<form>
-					<label id="form-title" for="media"><h2>Search for a piece of media:</h2></label>
-					<input id="form-input" name="media" id="media" type="text" placeholder="Superman"/>
-					<button id="form-btn" type="submit">Search</button>
-				</form>
-				<ul id="search-results">
-				</ul>
-				<div id="data">
-					<p id="data-p"></p>
-					<p id="expire-date"></p>
-				</div>
-			</section>
-			<section id="search-history">
-				<h2>Search History:</h2>
-				<ul></ul>
-			</section>
-			<section id="calendar" style="display: none;">
-				<button id="authorize_button" style="display: none;">Add Date to Google Calendar</button>
-				<button id="add_date_button">Add Date to Google Calendar</button>
-				<button id="signout_button" style="display: none;">Sign Out</button>
-				<pre id="content" style="white-space: pre-wrap;"></pre>
-			</section>
 
-			
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/css/foundation.min.css"
+		crossorigin="anonymous">
+	<link rel="stylesheet" href="./assets/css/style.css" />
 
-    <!-- JavaScript -->
-		<script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"
-        onreadystatechange="if (this.readyState === 'complete') this.onload()">
-        </script>
-		<script src="./assets/js/luxon.min.js"></script>
-		<script src="./assets/js/script.js"></script>		
-  </body>
+	<title>Copyright Timer</title>
+</head>
+
+<body>
+	<div id="page-container">
+		<div id="content-wrap">
+			<header id="banner">
+				<h1>Copyright Timer</h1>
+				<object id="banner-img" data="./assets/images/calendar.svg"> </object>
+				<p>Check whether works of art are in the public domain!</p>
+			</header>
+
+			<main>
+				<section id="left-margin">
+				</section>
+				<section id="search">
+					<form>
+						<label id="form-title" for="media">
+							<h2>Search for a Piece of Media:</h2>
+						</label>
+						<input id="form-input" name="media" id="media" type="text"
+							placeholder="Superman" />
+						<button id="form-btn" type="submit" class="button">Search</button>
+					</form>
+
+					<ul id="search-results">
+					</ul>
+
+					<div id="data">
+						<p id="data-p"></p>
+						<p id="expire-date"></p>
+					</div>
+					<section id="calendar" style="display: none;">
+						<button id="authorize_button" style="display: none;" class="button">Add Date to Google
+							Calendar</button>
+						<button id="add_date_button" class="button">Add Date to Google Calendar</button>
+						<button id="signout_button" style="display: none;" class="button">Sign Out</button>
+						<button id="open-event" class="button" style="display: none;"><object id="calendar-img" data="./assets/images/event-created.svg"> </object></button>
+						<pre id="content" style="white-space: pre-wrap;"></pre>
+					</section>
+				</section>
+				<section id="search-history">
+					<h2>Search History:</h2>
+					<button id="clear-history" class="button" onclick="clearHistory()">X Clear History</button>
+					<ul></ul>
+				</section>
+				<!-- <button class="button" onclick="location.href='https://google.com';" ;">Open Event</button> -->
+				
+
+				
+			</main>
+		</div>
+		<footer id="footer">
+			<ul class="menu expanded text-center">
+				<li class="menu-text">Made with ❤ by:</li>
+				<li><a href="https://github.com/raarce118"><img class="github"
+							src="./assets/images/icons8-github.svg" /><span>Rich Arce</span></a></li>
+				<li><a href="https://github.com/DavidTJGriffin"><img class="github"
+							src="./assets/images/icons8-github.svg" /><span>David Griffin</span></a></li>
+				<li><a href="https://github.com/OfficialBeez"><img class="github"
+							src="./assets/images/icons8-github.svg" /><span>Jeffrey Koon</span></a></li>
+				<li><a href="https://github.com/Moses-Ian"><img class="github"
+							src="./assets/images/icons8-github.svg" /><span>Ian Moses</span></a></li>
+				<li><a href="https://www.wikidata.org/wiki/Wikidata:Main_Page"><img
+							src="./assets/images/Wikidata.svg" /></a></li>
+			</ul>
+		</footer>
+	</div>
+
+	<!-- JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.4/dist/js/foundation.min.js"
+		crossorigin="anonymous"></script>
+	<script async defer src="https://apis.google.com/js/api.js" onload="this.onload=function(){};handleClientLoad()"
+		onreadystatechange="if (this.readyState === 'complete') this.onload()">
+		</script>
+	<script src="./assets/js/luxon.min.js"></script>
+	<script src="./assets/js/script.js"></script>
+</body>
+
 </html>
+

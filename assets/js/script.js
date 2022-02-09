@@ -25,6 +25,7 @@ var authorizeButton = document.getElementById('authorize_button');
 var signoutButton = document.getElementById('signout_button');
 var calendarSection = document.getElementById('calendar');
 var addDate = document.getElementById('add_date_button');
+var openEvent = document.getElementById('open-event');
 
 
 claimDictionary = {
@@ -33,6 +34,7 @@ claimDictionary = {
 	"P3931": " copyright held by "
 };
 
+var bannerEl = document.querySelector("#banner");
 var formEl = document.querySelector("form");
 var formInputEl = document.querySelector("#form-input");
 var searchResultsEl = document.querySelector("#search-results");
@@ -42,6 +44,8 @@ var expireDateEl = document.querySelector("#expire-date");
 var historyEl = document.querySelector("#search-history ul");
 
 var DateTime = luxon.DateTime;	//alias
+
+const badDataBase = " is either not a copyrightable work or this data is incomplete. If you believe this to be in error and you would like to improve our site and Wikidata, you can <a href='mailto:imoses2@hotmail.com?subject=Copyright Timer' target='_blank'>email us</a> or <a href='https://www.wikidata.org/wiki/Wikidata:Tours' target='_blank'>improve Wikidata</a> yourself."
 
 
 //functions
@@ -100,8 +104,11 @@ function displayId(data) {
 
 	if (!claim) {
 		console.log("data is incomplete :(");
-		dataResult = "data is incomplete :(";
-		dataPEl.textContent = dataResult;
+		// dataResult = "data is incomplete :(";
+		expireDateEl.textContent =  "";
+		dataPEl.innerHTML = dataResult + badDataBase;
+		searchResultsEl.style.display = "none";
+		dataEl.style.display = "block";
 		return;
 	}
 
@@ -137,6 +144,8 @@ function displayCreators(data) {
 	expiredDateArr = [];
 	copyrightHolderArr = [];
 	for (i = 0; i < idArr.length; i++) {
+		if (i == idArr.length-1)
+			dataResult = dataResult.concat('and ');
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
 		dataResult = dataResult.concat(item.labels.en.value);
@@ -148,7 +157,7 @@ function displayCreators(data) {
 			var time = claim[0].mainsnak.datavalue.value.time
 			time = DateTime.fromISO(time.substring(1));
 			console.log(time.toLocaleString());
-			dataResult = dataResult.concat(` who died on ${time.toLocaleString()} `);
+			dataResult = dataResult.concat(` (who died on ${time.toLocaleString()}) `);
 			time = time.plus({ 'year': 70 });
 			console.log(time.toLocaleString());
 			expiredDateArr.push(time);
@@ -157,10 +166,17 @@ function displayCreators(data) {
 		}
 		else {	//still alive, or data is incomplete
 			console.log("who is still alive")
-			dataResult = dataResult.concat(" who is still alive ");
+			dataResult = dataResult.concat(" (who is still alive) ");
 		}
+
+		
+		
 		searchResultsEl.style.display = "none";
+
+		searchResultsEl.style.left = '-100%';
 		dataEl.style.display = "block";
+		if (i == idArr.length-1)
+			dataResult = dataResult.concat('.');
 	}
 	expiredDate = null;
 	var displayText;
@@ -170,13 +186,14 @@ function displayCreators(data) {
 			if (expiredDate === null || expiredDateArr[i] > expiredDate)
 				expiredDate = expiredDateArr[i];
 		//build the textContent
-		displayText = `This copyright expires on ${expiredDate.toLocaleString()}.`;
+		displayText = `This copyright expires on <span class="expired-date">${expiredDate.toLocaleString()}</span>.`;
 	} else {
-		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 && s}.`;
+		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
 	}
 
 	dataPEl.textContent = dataResult;
-	expireDateEl.textContent = displayText;
+	expireDateEl.innerHTML = displayText;
+	searchResultsEl.style.left = '-100%';
 	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
 }
@@ -210,6 +227,8 @@ function displaySearchResults(data) {
 		liEl.dataset.itemId = data.search[i].id;
 		h3El.textContent = data.search[i].label;
 		pEl.textContent = data.search[i].description;
+		// h3El.classList.add("label");
+		
 
 		liEl.appendChild(h3El);
 		liEl.appendChild(pEl);
@@ -218,6 +237,10 @@ function displaySearchResults(data) {
 	}
 
 	searchResultsEl.style.display = "block";
+	
+	setTimeout (function (){
+		searchResultsEl.style.left = '0';
+	}, 0)
 
 }
 
@@ -243,6 +266,11 @@ function addHistoryEl(id, label) {
 	historyItemEl.dataset.itemId = id;
 	historyItemEl.textContent = label;
 	historyEl.appendChild(historyItemEl);
+}
+
+function clearHistory() {
+	localStorage.removeItem("history");
+	historyEl.innerHTML = "";		// no internal event handlers, so this is ok
 }
 
 
@@ -276,10 +304,16 @@ historyEl.addEventListener("click", function (event) {
 	fetchId(id);
 });
 
+bannerEl.addEventListener("click", function (event) {
+	location.reload();
+});
+
+
+
 //body
 //=====================================
 // fetchId(id);
-fetchTitle(title);
+// fetchTitle(title);
 loadHistory();
 
 
@@ -380,7 +414,12 @@ addDate.addEventListener('click', function addEvent() {
 	});
 
 	request.execute(function (event) {
-		appendPre('Event created: ' + event.htmlLink);
+		
+	openEvent.style.display = 'block';
+	openEvent.setAttribute('onclick', "window.open('" + event.htmlLink + "','_blank')");
+	openEvent.setAttribute('target', "_blank");
+	// onclick=" window.open('http://google.com','_blank')"
+
 	});
 	signoutButton.style.display = 'none'
 	addDate.style.display = 'none'
@@ -388,9 +427,27 @@ addDate.addEventListener('click', function addEvent() {
 });
 
 
+// Java plugins for dropdown menu
 
+foundation.core.js
+foundation.dropdown.js
+foundation.util.keyboard.js
+foundation.util.box.js
+foundation.util.touch.js
+foundation.util.triggers.js
+Foundation.MediaQuery.current // => 'small', 'medium', etc.
+Foundation.MediaQuery.is('medium') // => True for "medium" or larger
+// ↑ True for "medium" or larger (by default)
+Foundation.MediaQuery.is('medium up');
+Foundation.MediaQuery.atLeast('medium');
 
+// → True for "medium" only
+Foundation.MediaQuery.is('medium only');
+Foundation.MediaQuery.only('medium');
 
+// ↓ True for "medium" or smaller
+Foundation.MediaQuery.is('medium down');
+Foundation.MediaQuery.upTo('medium');
 
 
 

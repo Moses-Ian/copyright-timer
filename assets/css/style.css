@@ -1,17 +1,87 @@
-/* Once you start implementing Tailwind, you should probably delete everything in this file */
+:root {
+	--background: #242834;
+	--formInput: #1E252D;
+	--highlight: #E31A6C;
+	--highlightDarker: #b71556;
+	--text: #FEFEFF;
+	--backgroundDarker: #1A242E;
+	--backgroundLighter: #343a4b;
+	--primary: #1778BB;
+}
+
 
 * {
 	/* padding: 0; */
 	/* margin: 0; */
 	/* border: 1px solid blue; */
+	color: var(--text);
+}
+
+body {
+	background-color: var(--background);
 }
 
 main {
 	display: flex;
+	justify-content: space-between;
+}
+
+#left-margin {
+	flex: 1 0 0;
 }
 
 #search {
-	flex: 4 0 0;
+	flex: 3 0 0;
+}
+
+header {
+	background-color: var(--backgroundDarker);
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+}
+
+#form-title h2 {
+	color: var(--text);
+}
+
+#search-section {
+	margin: auto;
+	width: 100%;
+}
+
+#search {
+	margin-left: 50px;
+	margin-right: 50px;
+}
+
+#search-results {
+	position: relative;
+	left: -100%;
+	width: 100%;
+	transition: left 1s;
+}
+
+#search-results li {
+	padding: 5px;
+	border-radius: 5px;
+	transition: background-color .5s;
+}
+
+#search-results li:hover {
+	background-color: var(--backgroundDarker);
+}
+
+#search-results h3 {
+	color: var(--primary);
+	text-shadow: 0px 0px 2px var(--primary);
+}
+
+#search-results p {
+	padding-left: 30px;
+	text-transform: capitalize;
 }
 
 #search-history {
@@ -20,6 +90,11 @@ main {
 
 #data {
 	display: none;
+}
+
+.expired-date {
+	color: var(--primary);
+	text-shadow: 0 0 1px var(--primary);
 }
 
 h3 {
@@ -33,4 +108,116 @@ p {
 #calendar {
 	display: flex;
 	flex-direction: column;
+}
+
+#banner {
+	display: flex;
+	align-items: center;
+	margin-bottom: 30px;
+}
+
+#banner h1 {
+	margin-left: 50px;
+	flex: 0 0 auto;
+}
+
+#banner-img {
+	height: 67px;
+	margin-left: 15px;
+	flex: 0 0 auto;
+}
+
+#banner p {
+	flex: 1 0 0;
+	text-align: right;
+	margin-right: 50px;
+	font-size: 22px;
+}
+
+#search-history {
+	position: relative;
+}
+
+#clear-history {
+	opacity: 0%;
+	position: absolute;
+	right: 0;
+	transition: opacity 0.5s;
+}
+
+#search-history:hover #clear-history {
+	opacity: 100%;
+	transition: opacity 3s;
+}
+
+footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+}
+
+
+.menu {
+	background: var(--backgroundDarker);
+	width: 100%;
+	align-items: center;
+}
+
+.menu li {
+	background: var(--backgroundDarker);
+}
+
+.menu li:hover {
+	background: var(--backgroundLighter);
+}
+
+.menu li:first-child:hover {
+	background: var(--backgroundDarker);
+}
+
+.menu a {
+	color: #fff;
+}
+
+.menu .github {
+	margin-right: 10px;
+	width: 0px;
+	transition: width .5s;
+}
+
+.menu li:hover .github {
+	width: 50px;
+}
+
+#page-container {
+	position: relative;
+	min-height: 100vh;
+}
+
+#content-wrap {
+	padding-bottom: 3rem;
+	/* Footer height */
+}
+
+#open-event object {
+	height: 45px;
+	width: 40px;
+	justify-content: center;
+	align-items: center;
+}
+
+
+#open-event {
+	padding-top: 0;
+	padding-left: 0;
+	
+	display: flex;
+}
+
+#footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 2.5rem;
+	/* Footer height */
 }
