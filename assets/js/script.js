@@ -110,7 +110,7 @@ function displayId(data) {
 		// dataResult = "data is incomplete :(";
 		expireDateEl.textContent =  "";
 		dataPEl.innerHTML = dataResult + badDataBase;
-		searchResultsEl.style.display = "none";
+		hideSearchResults();
 		dataEl.style.display = "block";
 		return;
 	}
@@ -173,10 +173,7 @@ function displayCreators(data) {
 		}
 
 		
-		
-		searchResultsEl.style.display = "none";
-
-		searchResultsEl.style.left = '-100%';
+		hideSearchResults();
 		dataEl.style.display = "block";
 		if (i == idArr.length-1)
 			dataResult = dataResult.concat('.');
@@ -196,8 +193,7 @@ function displayCreators(data) {
 
 	dataPEl.textContent = dataResult;
 	expireDateEl.innerHTML = displayText;
-	searchResultsEl.style.left = '-100%';
-	searchResultsEl.style.display = "none";
+	hideSearchResults()
 	dataEl.style.display = "block";
 }
 
@@ -238,15 +234,24 @@ function displaySearchResults(data) {
 
 		searchResultsEl.appendChild(liEl);
 	}
-
-	searchResultsEl.style.display = "block";
-	
-	setTimeout (function (){
-		searchResultsEl.style.left = '0';
-	}, 0)
-
+	slideSearchResults();
 }
 
+function slideSearchResults() {
+	searchResultsEl.style.height = "auto";
+	searchResultsEl.style.transition = 'left 1s, opacity 3s';
+	searchResultsEl.style.opacity = "1";
+	searchResultsEl.style.left = '0';
+}
+
+function hideSearchResults() {
+	searchResultsEl.style.height = "0";
+	searchResultsEl.style.transition = 'left 0s, opacity 0s';
+	searchResultsEl.style.opacity = "0";
+	searchResultsEl.style.left = '-100%';
+}
+
+//history
 function addToHistory(label) {
 	for (i = 0; i < searchHistory.length; i++) {
 		if (searchHistory[i].id == id)
