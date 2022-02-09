@@ -134,6 +134,7 @@ p {
 	text-align: right;
 	margin-right: 50px;
 	font-size: 22px;
+	margin-left: auto;
 }
 
 #search-history {
@@ -246,10 +247,6 @@ footer {
 		height: 45px;
 	}
 	
-	#banner-space {
-		flex: 0 0 0;
-	}
-	
 	#banner p {
 		font-size: 18px;
 		margin-right: 25px;
@@ -278,10 +275,6 @@ footer {
 	
 	#banner-img {
 		height: 35px;
-	}
-	
-	#banner-space {
-		flex: 1 0 0;
 	}
 	
 	#banner p {
