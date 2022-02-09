@@ -24,6 +24,7 @@ body {
 main {
 	display: flex;
 	justify-content: space-between;
+	position: relative;
 }
 
 #left-margin {
@@ -114,6 +115,7 @@ p {
 	display: flex;
 	align-items: center;
 	margin-bottom: 30px;
+	position: relative;
 }
 
 #banner h1 {
@@ -148,6 +150,10 @@ p {
 #search-history:hover #clear-history {
 	opacity: 100%;
 	transition: opacity 3s;
+}
+
+#show-history {
+	display: none;
 }
 
 footer {
@@ -281,6 +287,42 @@ footer {
 	#banner p {
 		font-size: 16px;
 		margin-right: 15px;
+	}
+	
+	#search-history {
+		opacity: 0;
+		margin-top: 30px;
+	}
+	
+	#clear-history {
+		opacity: 1;
+		font-size: 14px;
+		position: default;
+		left: 0;
+		right: 15px;
+	}
+	
+	#show-history {
+		width: 50px;
+		height: 50px;
+		background-color: black;
+		position: absolute;
+		bottom: -50px;
+		right: 0;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 1;
+	}
+	
+	#arrow {
+		width: 40%;
+		height: 40%;
+		border-bottom: 4px solid white;
+		border-right: 4px solid white;
+		transform: rotate(135deg);
+		display: block;
+		margin-left: 10px;
 	}
 	
 	.menu .github {
