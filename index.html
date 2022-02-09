@@ -17,28 +17,25 @@
 		<div id="content-wrap">
 			<header id="banner">
 				<h1>Copyright Timer</h1>
-				<object id="calendar-img" data="./assets/images/calendar.svg"> </object>
+				<object id="banner-img" data="./assets/images/calendar.svg"> </object>
+				<p>Check whether works of art are in the public domain!</p>
 			</header>
 
 			<main>
-				<div class="idk">
-					<section id="search">
-						<form>
-							<div class="grid-container">
-								<div class="grid-x grid-padding-x">
-									<div id="search-section" class="medium-6 cell">
-										<label id="form-title" for="media">
-											<h2>Search for a piece of media:</h2>
-										</label>
-										<input class="medium-6 cell" id="form-input" name="media" id="media" type="text"
-											placeholder="Superman" />
-										<button id="form-btn" type="submit" class="button">Search</button>
-									</div>
-								</div>
-							</div>
-							
+				<section id="left-margin">
+				</section>
+				<section id="search">
+					<form>
+						<label id="form-title" for="media">
+							<h2>Search for a Piece of Media:</h2>
+						</label>
+						<input id="form-input" name="media" id="media" type="text"
+							placeholder="Superman" />
+						<button id="form-btn" type="submit" class="button">Search</button>
+					</form>
 
-						</form>
+					<ul id="search-results">
+					</ul>
 
 						<ul id="search-results">
 						</ul>
@@ -50,7 +47,7 @@
 						
 					
 					</section>
-					
+
 					<section id="calendar" style="display: none;">
 						<button id="authorize_button" style="display: none;" class="button">Add Date to Google
 							Calendar</button>
@@ -59,7 +56,7 @@
 						<button id="open-event" class="button" style="display: none;"><object id="calendar-img" data="./assets/images/event-created.svg"> </object></button>
 						<pre id="content" style="white-space: pre-wrap;"></pre>
 					</section>
-				</div>
+				</section>
 				<section id="search-history">
 					<h2>Search History:</h2>
 					<button id="clear-history" class="button" onclick="clearHistory()">X Clear History</button>
@@ -75,7 +72,7 @@
 			<ul class="menu expanded text-center">
 				<li class="menu-text">Made with ❤ by:</li>
 				<li><a href="https://github.com/raarce118"><img class="github"
-							src="./assets/images/icons8-github.svg" /><span>Rich Arse</span></a></li>
+							src="./assets/images/icons8-github.svg" /><span>Rich Arce</span></a></li>
 				<li><a href="https://github.com/DavidTJGriffin"><img class="github"
 							src="./assets/images/icons8-github.svg" /><span>David Griffin</span></a></li>
 				<li><a href="https://github.com/OfficialBeez"><img class="github"
@@ -99,3 +96,4 @@
 </body>
 
 </html>
+
