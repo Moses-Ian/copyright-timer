@@ -284,11 +284,17 @@ function peakHistory() {
 		historyContainerEl.style.flexGrow = '2';
 		arrowEl.style.transform = "rotate(315deg)";
 		arrowEl.style.marginLeft = "-10px";
+		if (window.innerWidth > 640)
+			return;
+		historyContainerEl.style.height = 'auto';
 	} else {
 		historyContainerEl.style.opacity = '0';
 		historyContainerEl.style.flexGrow = '1';
 		arrowEl.style.transform = "rotate(135deg)";
 		arrowEl.style.marginLeft = "10px";
+		if (window.innerWidth > 640)
+			return;
+		historyContainerEl.style.height = '0';
 	}
 }
 
