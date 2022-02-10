@@ -238,13 +238,23 @@ function displaySearchResults(data) {
 
 		searchResultsEl.appendChild(liEl);
 	}
+	slideSearchResults();
+}
 
-	searchResultsEl.style.display = "block";
-	
-	setTimeout (function (){
-		searchResultsEl.style.left = '0';
-	}, 0)
+function slideSearchResults() {
+	// searchResultsEl.style.height = "auto";
+	searchResultsEl.style.transition = 'left 1s, opacity 3s';
+	// searchResultsEl.style.opacity = "1";
+	searchResultsEl.style.display = 'block';
+	searchResultsEl.style.left = '0';
+}
 
+function hideSearchResults() {
+	// searchResultsEl.style.height = "0";
+	searchResultsEl.style.transition = 'left 0s, opacity 0s';
+	// searchResultsEl.style.opacity = "0";
+	searchResultsEl.style.display = "none";
+	searchResultsEl.style.left = '-100%';
 }
 
 function addToHistory(label) {

@@ -51,6 +51,7 @@ ul {
 	flex: 3 0 0;
 	margin-left: 50px;
 	margin-right: 50px;
+	z-index: 1;
 }
 
 #form-title h2 {
@@ -66,7 +67,8 @@ ul {
 	position: relative;
 	left: -100%;
 	width: 100%;
-	transition: left 1s;
+	/* opacity: 0; */
+	transition: left 1s, opacity 3s;
 }
 
 #search-results li {
@@ -157,6 +159,7 @@ p {
 
 #show-history {
 	display: none;
+	z-index: 2;
 }
 
 footer {
@@ -257,7 +260,6 @@ footer {
 		margin-right: 5px;
 	}
 
-
 	.menu li:hover .github {
 		width: 25px;
 	}
@@ -317,7 +319,6 @@ footer {
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		z-index: 1;
 	}
 	
 	#arrow {
