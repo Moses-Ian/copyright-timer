@@ -66,8 +66,7 @@ ul {
 	position: relative;
 	left: -100%;
 	width: 100%;
-	opacity: 0;
-	transition: left 1s, opacity 3s;
+	transition: left 1s;
 }
 
 #search-results li {
@@ -142,7 +141,6 @@ p {
 #search-history {
 	flex: 1 0 0;
 	position: relative;
-	z-index: -1;
 }
 
 #clear-history {
