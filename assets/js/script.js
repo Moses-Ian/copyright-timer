@@ -249,6 +249,8 @@ function hideSearchResults() {
 	searchResultsEl.style.transition = 'left 0s, opacity 0s';
 	searchResultsEl.style.opacity = "0";
 	searchResultsEl.style.left = '-100%';
+	document.getElementById('page-container').style.overflowY = 'hidden';
+
 }
 
 //history
