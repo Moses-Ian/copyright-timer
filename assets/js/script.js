@@ -238,16 +238,18 @@ function displaySearchResults(data) {
 }
 
 function slideSearchResults() {
-	searchResultsEl.style.height = "auto";
+	// searchResultsEl.style.height = "auto";
 	searchResultsEl.style.transition = 'left 1s, opacity 3s';
-	searchResultsEl.style.opacity = "1";
+	// searchResultsEl.style.opacity = "1";
+	searchResultsEl.style.display = 'block';
 	searchResultsEl.style.left = '0';
 }
 
 function hideSearchResults() {
-	searchResultsEl.style.height = "0";
+	// searchResultsEl.style.height = "0";
 	searchResultsEl.style.transition = 'left 0s, opacity 0s';
-	searchResultsEl.style.opacity = "0";
+	// searchResultsEl.style.opacity = "0";
+	searchResultsEl.style.display = "none";
 	searchResultsEl.style.left = '-100%';
 }
 
