@@ -453,15 +453,15 @@ addDate.addEventListener('click', function addEvent() {
 
 	request.execute(function (event) {
 		
-	openEvent.style.display = 'block';
-	openEvent.setAttribute('onclick', "window.open('" + event.htmlLink + "','_blank')");
-	openEvent.setAttribute('target', "_blank");
-	// onclick=" window.open('http://google.com','_blank')"
-
+		openEvent.style.display = 'block';
+		openEvent.setAttribute('onclick', "window.open('" + event.htmlLink + "','_blank')");
+		openEvent.setAttribute('target', "_blank");
+		// onclick=" window.open('http://google.com','_blank')"
+		
 	});
 	signoutButton.style.display = 'none'
 	addDate.style.display = 'none'
-
+	
 });
 
 
@@ -478,6 +478,7 @@ Foundation.MediaQuery.is('medium') // => True for "medium" or larger
 // ↑ True for "medium" or larger (by default)
 Foundation.MediaQuery.is('medium up');
 Foundation.MediaQuery.atLeast('medium');
+Foundation.MediaQuery.upTo('medium');
 
 // → True for "medium" only
 Foundation.MediaQuery.is('medium only');
@@ -485,18 +486,3 @@ Foundation.MediaQuery.only('medium');
 
 // ↓ True for "medium" or smaller
 Foundation.MediaQuery.is('medium down');
-Foundation.MediaQuery.upTo('medium');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
