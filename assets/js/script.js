@@ -238,6 +238,7 @@ function displaySearchResults(data) {
 
 		searchResultsEl.appendChild(liEl);
 	}
+	slideSearchResults();
 }
 
 function slideSearchResults() {
