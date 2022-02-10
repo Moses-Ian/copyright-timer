@@ -21,10 +21,11 @@ https://moses-ian.github.io/copyright-timer
 * [Jeffrey Koon](https://github.com/OfficialBeez)
 * [Ian Moses](https://github.com/Moses-Ian)
 
-### APIs Used:
+### Technologies Used:
 * [Wikidata](https://www.wikidata.org/wiki/Special:ApiSandbox)
-* [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page)
+* [Google Calendar](https://developers.google.com/calendar/api)
 * [Luxon](https://moment.github.io/luxon/#/)
+* [Foundation](https://get.foundation/sites/docs/index.html)
 
 ## License
 
