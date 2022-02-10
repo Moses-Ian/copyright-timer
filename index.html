@@ -19,50 +19,52 @@
 				<h1>Copyright Timer</h1>
 				<object id="banner-img" data="./assets/images/calendar.svg"> </object>
 				<p>Check whether works of art are in the public domain!</p>
-				<div id="show-history"><div id="arrow"></div></div>
+				<div id="show-history">
+					<div id="arrow"></div>
+				</div>
 			</header>
-
-			<main>
-				<section id="left-margin">
-				</section>
-				<section id="search">
-					<form>
-						<label id="form-title" for="media">
-							<h2>Search for a Piece of Media:</h2>
-						</label>
-						<input id="form-input" name="media" id="media" type="text"
-							placeholder="Superman" />
-						<button id="form-btn" type="submit" class="button">Search</button>
-					</form>
-
-					<ul id="search-results">
-					</ul>
-
-					<div id="data">
-						<p id="data-p"></p>
-						<p id="expire-date"></p>
-					</div>
-					<section id="calendar" style="display: none;">
-						<button id="authorize_button" style="display: none;" class="button">Add Date to Google
-							Calendar</button>
-						<button id="add_date_button" class="button">Add Date to Google Calendar</button>
-						<button id="signout_button" style="display: none;" class="button">Sign Out</button>
-						<button id="open-event" class="button" style="display: none;"><object id="calendar-img" data="./assets/images/event-created-blue.svg"> </object></button>
-						<pre id="content" style="white-space: pre-wrap;"></pre>
+			
+				<main>
+					<section id="left-margin">
 					</section>
-				</section>
-				<section id="search-history">
-					<h2>Search History:</h2>
-					<ul></ul>
-					<button id="clear-history" class="button" onclick="clearHistory()">X Clear History</button>
-				</section>
-				<section id="right-margin">
-				</section>
-				<!-- <button class="button" onclick="location.href='https://google.com';" ;">Open Event</button> -->
-				
+					<section id="search">
+						<form>
+							<label id="form-title" for="media">
+								<h2>Search for a Piece of Media:</h2>
+							</label>
+							<input id="form-input" name="media" id="media" type="text" placeholder="Superman" />
+							<button id="form-btn" type="submit" class="button">Search</button>
+						</form>
 
-				
-			</main>
+						<ul id="search-results">
+						</ul>
+
+						<div id="data">
+							<p id="data-p"></p>
+							<p id="expire-date"></p>
+						</div>
+						<section id="calendar" style="display: none;">
+							<button id="authorize_button" style="display: none;" class="button">Add Date to Google
+								Calendar</button>
+							<button id="add_date_button" class="button">Add Date to Google Calendar</button>
+							<button id="signout_button" style="display: none;" class="button">Sign Out</button>
+							<a id="open-event" style="display: none;">
+								<img id="open-event-img" alt="open pubic domain event in google calendar" src="./assets/images/event-created-blue.svg"> </a>
+							<pre id="content" style="white-space: pre-wrap;"></pre>
+						</section>
+					</section>
+					<section id="search-history">
+						<h2>Search History:</h2>
+						<ul></ul>
+						<button id="clear-history" class="button" onclick="clearHistory()">X Clear History</button>
+					</section>
+					<section id="right-margin">
+					</section>
+					<!-- <button class="button" onclick="location.href='https://google.com';" ;">Open Event</button> -->
+
+
+
+				</main>
 		</div>
 		<footer id="footer">
 			<ul class="menu expanded text-center">
@@ -92,4 +94,3 @@
 </body>
 
 </html>
-
