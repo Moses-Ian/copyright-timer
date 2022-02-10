@@ -110,7 +110,7 @@ function displayId(data) {
 		// dataResult = "data is incomplete :(";
 		expireDateEl.textContent =  "";
 		dataPEl.innerHTML = dataResult + badDataBase;
-		hideSearchResults();
+		searchResultsEl.style.display = "none";
 		dataEl.style.display = "block";
 		return;
 	}
@@ -173,7 +173,10 @@ function displayCreators(data) {
 		}
 
 		
-		hideSearchResults();
+		
+		searchResultsEl.style.display = "none";
+
+		searchResultsEl.style.left = '-100%';
 		dataEl.style.display = "block";
 		if (i == idArr.length-1)
 			dataResult = dataResult.concat('.');
@@ -193,7 +196,8 @@ function displayCreators(data) {
 
 	dataPEl.textContent = dataResult;
 	expireDateEl.innerHTML = displayText;
-	hideSearchResults()
+	searchResultsEl.style.left = '-100%';
+	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
 }
 
@@ -234,8 +238,6 @@ function displaySearchResults(data) {
 
 		searchResultsEl.appendChild(liEl);
 	}
-	slideSearchResults();
-}
 
 function slideSearchResults() {
 	// searchResultsEl.style.height = "auto";
@@ -253,7 +255,6 @@ function hideSearchResults() {
 	searchResultsEl.style.left = '-100%';
 }
 
-//history
 function addToHistory(label) {
 	for (i = 0; i < searchHistory.length; i++) {
 		if (searchHistory[i].id == id)
