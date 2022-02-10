@@ -222,10 +222,13 @@ footer {
 
 
 #open-event {
-	padding-top: 0;
-	padding-left: 0;
-	
-	display: flex;
+	background: none;
+	color: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
 }
 
 #footer {
@@ -258,7 +261,7 @@ footer {
 	.menu .github {
 		margin-right: 5px;
 	}
-<<<<<<< HEAD
+
 
 	.menu li:hover .github {
 		width: 25px;
