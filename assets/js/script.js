@@ -178,6 +178,7 @@ function displayCreators(data) {
 
 		searchResultsEl.style.left = '-100%';
 		dataEl.style.display = "block";
+		addDate.style.display = "block";
 		if (i == idArr.length-1)
 			dataResult = dataResult.concat('.');
 	}
