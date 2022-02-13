@@ -200,6 +200,7 @@ function displayCreators(data) {
 	} else {
 		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
 		addDate.style.display = 'none'
+		signoutButton.style.display = 'none'
 	}
 
 	dataPEl.textContent = dataResult;
