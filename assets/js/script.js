@@ -148,7 +148,7 @@ function displayCreators(data) {
 	expiredDateArr = [];
 	copyrightHolderArr = [];
 	for (i = 0; i < idArr.length; i++) {
-		if (i == idArr.length-1)
+		if (i == idArr.length-1 && idArr.length != 1)
 			dataResult = dataResult.concat('and ');
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
