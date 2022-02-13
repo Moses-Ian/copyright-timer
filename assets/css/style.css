@@ -157,6 +157,16 @@ p {
 	transition: opacity 3s;
 }
 
+#search-history li {
+	padding: 0 5px;
+	border-radius: 5px;
+	transition: background-color .5s;
+}
+
+#search-history li:hover {
+	background-color: var(--backgroundDarker);
+}
+
 #show-history {
 	display: none;
 	z-index: 2;

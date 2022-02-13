@@ -102,8 +102,9 @@ function displayId(data) {
 			break;
 	}
 
-	console.log(`${item.labels.en.value} (${id})`);
-	dataResult = dataResult.concat(item.labels.en.value);
+	title = item.labels.en.value;
+	console.log(`${title} (${id})`);
+	dataResult = dataResult.concat(title);
 
 	if (!claim) {
 		console.log("data is incomplete :(");
@@ -147,7 +148,7 @@ function displayCreators(data) {
 	expiredDateArr = [];
 	copyrightHolderArr = [];
 	for (i = 0; i < idArr.length; i++) {
-		if (i == idArr.length-1)
+		if (i == idArr.length-1 && idArr.length != 1)
 			dataResult = dataResult.concat('and ');
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
@@ -191,7 +192,11 @@ function displayCreators(data) {
 			if (expiredDate === null || expiredDateArr[i] > expiredDate)
 				expiredDate = expiredDateArr[i];
 		//build the textContent
-		displayText = `This copyright expires on <span class="expired-date">${expiredDate.toLocaleString()}</span>.`;
+		let alreadyExpired = expiredDate < DateTime.now();	//boolean
+		let expired = alreadyExpired ? 'expired' : 'expires';
+		displayText = `This copyright ${expired} on <span class="expired-date">${expiredDate.toLocaleString()}</span>. `;
+		if(alreadyExpired)
+			displayText = displayText.concat(`${title} is in the public domain.`);
 	} else {
 		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
 	}
