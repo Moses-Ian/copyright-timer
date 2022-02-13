@@ -109,7 +109,7 @@ function displayId(data) {
 	if (!claim) {
 		console.log("data is incomplete :(");
 		// dataResult = "data is incomplete :(";
-		expireDateEl.textContent =  "";
+		expireDateEl.textContent = "";
 		dataPEl.innerHTML = dataResult + badDataBase;
 		searchResultsEl.style.display = "none";
 		dataEl.style.display = "block";
@@ -148,7 +148,7 @@ function displayCreators(data) {
 	expiredDateArr = [];
 	copyrightHolderArr = [];
 	for (i = 0; i < idArr.length; i++) {
-		if (i == idArr.length-1 && idArr.length != 1)
+		if (i == idArr.length - 1 && idArr.length != 1)
 			dataResult = dataResult.concat('and ');
 		var item = data.entities[idArr[i]];
 		console.log(item.labels.en.value);
@@ -173,15 +173,15 @@ function displayCreators(data) {
 			dataResult = dataResult.concat(" (who is still alive) ");
 		}
 
-		
-		
+
+
 		searchResultsEl.style.display = "none";
 
 		searchResultsEl.style.left = '-100%';
 		dataEl.style.display = "block";
 		addDate.style.display = "block";
 		openEvent.style.display = "none";
-		if (i == idArr.length-1)
+		if (i == idArr.length - 1)
 			dataResult = dataResult.concat('.');
 	}
 	expiredDate = null;
@@ -195,10 +195,11 @@ function displayCreators(data) {
 		let alreadyExpired = expiredDate < DateTime.now();	//boolean
 		let expired = alreadyExpired ? 'expired' : 'expires';
 		displayText = `This copyright ${expired} on <span class="expired-date">${expiredDate.toLocaleString()}</span>. `;
-		if(alreadyExpired)
+		if (alreadyExpired)
 			displayText = displayText.concat(`${title} is in the public domain.`);
 	} else {
 		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
+		addDate.style.display = 'none'
 	}
 
 	dataPEl.textContent = dataResult;
@@ -238,7 +239,7 @@ function displaySearchResults(data) {
 		h3El.textContent = data.search[i].label;
 		pEl.textContent = data.search[i].description;
 		// h3El.classList.add("label");
-		
+
 
 		liEl.appendChild(h3El);
 		liEl.appendChild(pEl);
@@ -345,11 +346,12 @@ historyEl.addEventListener("click", function (event) {
 	var targetLiEl = event.target.closest("li");
 	id = targetLiEl.dataset.itemId;
 	fetchId(id);
+	console.log(id)
 });
 
 bannerEl.addEventListener("click", function (event) {
 	target = event.target;
-	if(target.tagName == 'H1')
+	if (target.tagName == 'H1')
 		location.reload();
 });
 
@@ -459,11 +461,11 @@ addDate.addEventListener('click', function addEvent() {
 	});
 
 	request.execute(function (event) {
-		
-	openEvent.style.display = 'block';
-	openEvent.setAttribute('onclick', "window.open('" + event.htmlLink + "','_blank')");
-	openEvent.setAttribute('target', "_blank");
-	// onclick=" window.open('http://google.com','_blank')"
+
+		openEvent.style.display = 'block';
+		openEvent.setAttribute('onclick', "window.open('" + event.htmlLink + "','_blank')");
+		openEvent.setAttribute('target', "_blank");
+		// onclick=" window.open('http://google.com','_blank')"
 
 	});
 	signoutButton.style.display = 'none'
