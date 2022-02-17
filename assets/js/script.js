@@ -4,6 +4,7 @@ var id = "Q79015";	//superman->this will update with form update
 var title = '';
 // var title = "Katniss Everdeen";
 var idArr = [];
+var claims;
 var apiUrlBase = `https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&origin=*&languages=en&normalize=yes`
 var idBase = '&ids=';
 var titleBase = '&sites=enwiki&titles=';
@@ -13,6 +14,7 @@ var dataResult = "";
 var searchHistory = [];
 var searchTitle;
 var expiredDateArr = [];
+var workForHireExpiredDateArr = [];
 var expiredDate;
 var copyrightHolderArr = [];
 
@@ -45,7 +47,7 @@ var formEl = document.querySelector("form");
 var formInputEl = document.querySelector("#form-input");
 var searchResultsEl = document.querySelector("#search-results");
 var dataEl = document.querySelector("#data");
-var dataPEl = document.querySelector("#data-p");
+var dataUlEl = document.querySelector("#data-ul");
 var expireDateEl = document.querySelector("#expire-date");
 var historyEl = document.querySelector("#search-history ul");
 var showHistoryEl = document.querySelector("#show-history");
@@ -107,15 +109,20 @@ function displayId(data) {
 	statementArr = [];
 	idArr = [];
 	
+	//get published date
+	publishedDate = data.entities[id].claims.P577?.[0].mainsnak.datavalue.value.time;
+	if(publishedDate)
+		publishedDate = DateTime.fromISO(publishedDate.substring(1));
+	
 	//filter claims
-	var claims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in claimDictionary);	//filters the claims down to just the ones present in claimDictionary
+	claims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in claimDictionary);	//filters the claims down to just the ones present in claimDictionary
 	// console.log(claims);	//claims is what I like to call an array-dictionary
 
 	//guard against empty claim array
  	if (claims.length === 0) {
 		console.log("data is incomplete :(");
 		expireDateEl.textContent =  "";
-		dataPEl.innerHTML = title + badDataBase;
+		dataUlEl.innerHTML = title + badDataBase;
 		searchResultsEl.style.display = "none";
 		dataEl.style.display = "block";
 		return;
@@ -155,40 +162,63 @@ function fetchCreators(id) {
 
 //step 4: display "Jerry Siegal who died on 28 Jan 1996, etc"
 function displayCreators(data) {
+	//setup
 	expiredDateArr = [];
-	copyrightHolderArr = [];
+	workForHireExpiredDateArr = [];
+	// copyrightHolderArr = [];
+	
+	//loop through all creators/publishers/devs
 	for(let statement=0; statement<statementArr.length; statement++){
 		for(let id=0; id<idArr[statement].length; id++) {
-			if (id == statement.length-1)
-				statementArr[statement] += 'and ';
 			let item = data.entities[idArr[statement][id]];
+			//build out the statement
+			if (id == idArr[statement].length-1 && id != 0)
+				statementArr[statement] += 'and ';
 			statementArr[statement] += item.labels.en.value;
-			copyrightHolderArr.push(item.labels.en.value);
+			// copyrightHolderArr.push(item.labels.en.value);
 			//check if human
 			if (item.claims.P31?.map(value => value.mainsnak.datavalue.value.id).includes('Q5')) {
+				//yes -> check if dead
 				let deathClaim = item.claims.P570;
 				if (deathClaim) {
+					//yes -> build out the statement
 					let time = deathClaim[0].mainsnak.datavalue.value.time;
 					time = DateTime.fromISO(time.substring(1));
 					statementArr[statement] += ` (who died on ${time.toLocaleString()}) `;
+					//calculate when it'll expire
 					time = time.plus({ 'year': 70 });
 					expiredDateArr.push(time);
-					calendarSection.style.display = 'block';
 				} else {
+					//no -> build out the statement
 					statementArr[statement] += " (who is still alive) ";
 				}
 			}
+			//check if published statement
+			if(claims[statement][0] == 'P123' && publishedDate) {
+				statementArr[statement] += ` on ${publishedDate.toLocaleString()}`;
+				publishedDate = publishedDate.plus({ 'year': 90 });
+				workForHireExpiredDateArr.push(publishedDate);
+			}
+			//close out the statement
 			if (id == idArr[statement].length-1)
 				statementArr[statement] += '.';
 		}
 	}
 	
+	//put the statements into their html elements
+	statementArr.forEach(statement => {
+		let liEl = document.createElement('li');
+		liEl.textContent = statement;
+		dataUlEl.appendChild(liEl);
+	});
+	
+	//goto step 5
 	displayExpiredDate();
 }
 
 //step 5: display "This copyright will expire on ..."
 function displayExpiredDate() {
-	expiredDate = null;
+/*  	expiredDate = null;
 	var displayText;
 	if (expiredDateArr.length) {
 		//get the last date
@@ -201,13 +231,22 @@ function displayExpiredDate() {
 		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
 	}
 
-	dataPEl.textContent = dataResult;
+ 
+	// dataPEl.textContent = dataResult;
 	expireDateEl.innerHTML = displayText;
 	searchResultsEl.style.left = '-100%';
 	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
 	addDate.style.display = "block";
 	openEvent.style.display = "none";
+ */	
+
+	
+
+
+
+
+
 }
 
 //search
