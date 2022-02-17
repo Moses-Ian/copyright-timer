@@ -109,7 +109,7 @@ function displayId(data) {
 	
 	//filter claims
 	var claims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in claimDictionary);	//filters the claims down to just the ones present in claimDictionary
-	console.log(claims);	//claims is what I like to call an array-dictionary
+	// console.log(claims);	//claims is what I like to call an array-dictionary
 
 	//guard against empty claim array
  	if (claims.length === 0) {
@@ -155,7 +155,7 @@ function fetchCreators(id) {
 
 //step 4: display "Jerry Siegal who died on 28 Jan 1996, etc"
 function displayCreators(data) {
-	expiredDateArr = [];
+/* 	expiredDateArr = [];
 	copyrightHolderArr = [];
 	for (i = 0; i < idArr.length; i++) {
 		if (i == idArr.length-1)
@@ -194,6 +194,34 @@ function displayCreators(data) {
 		if (i == idArr.length-1)
 			dataResult = dataResult.concat('.');
 	}
+	displayExpiredDate();
+ */
+	
+	console.log(statementArr);
+	console.log(idArr);
+	
+	expiredDateArr = [];
+	copyrightHolderArr = [];
+	for(let statement=0; statement<statementArr.length; statement++){
+		for(let id=0; id<idArr[statement].length; id++) {
+			if (id == statement.length-1)
+				statementArr[statement] += 'and ';
+			let item = data.entities[idArr[statement][id]];
+			statementArr[statement] += item.labels.en.value;
+			copyrightHolderArr.push(item.labels.en.value);
+			console.log(item);
+			//check if human
+			if (item.claims.P31?.map(value => value.mainsnak.datavalue.value.id).includes('Q5'))
+				console.log("they're a human!");
+			
+		}
+	}
+
+
+}
+
+//step 5: display "This copyright will expire on ..."
+function displayExpiredDate() {
 	expiredDate = null;
 	var displayText;
 	if (expiredDateArr.length) {
