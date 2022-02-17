@@ -155,51 +155,6 @@ function fetchCreators(id) {
 
 //step 4: display "Jerry Siegal who died on 28 Jan 1996, etc"
 function displayCreators(data) {
-/* 	expiredDateArr = [];
-	copyrightHolderArr = [];
-	for (i = 0; i < idArr.length; i++) {
-		if (i == idArr.length-1)
-			dataResult = dataResult.concat('and ');
-		var item = data.entities[idArr[i]];
-		console.log(item.labels.en.value);
-		dataResult = dataResult.concat(item.labels.en.value);
-		copyrightHolderArr.push(item.labels.en.value);
-		var claim = item.claims.P570;
-		if (claim) {
-			// console.log("who died on");
-			// console.log(claim[0].mainsnak.datavalue.value.time);
-			var time = claim[0].mainsnak.datavalue.value.time
-			time = DateTime.fromISO(time.substring(1));
-			console.log(time.toLocaleString());
-			dataResult = dataResult.concat(` (who died on ${time.toLocaleString()}) `);
-			time = time.plus({ 'year': 70 });
-			console.log(time.toLocaleString());
-			expiredDateArr.push(time);
-			calendarSection.style.display = 'block'
-
-		}
-		else {	//still alive, or data is incomplete
-			console.log("who is still alive")
-			dataResult = dataResult.concat(" (who is still alive) ");
-		}
-
-		
-		
-		searchResultsEl.style.display = "none";
-
-		searchResultsEl.style.left = '-100%';
-		dataEl.style.display = "block";
-		addDate.style.display = "block";
-		openEvent.style.display = "none";
-		if (i == idArr.length-1)
-			dataResult = dataResult.concat('.');
-	}
-	displayExpiredDate();
- */
-	
-	console.log(statementArr);
-	console.log(idArr);
-	
 	expiredDateArr = [];
 	copyrightHolderArr = [];
 	for(let statement=0; statement<statementArr.length; statement++){
@@ -209,15 +164,26 @@ function displayCreators(data) {
 			let item = data.entities[idArr[statement][id]];
 			statementArr[statement] += item.labels.en.value;
 			copyrightHolderArr.push(item.labels.en.value);
-			console.log(item);
 			//check if human
-			if (item.claims.P31?.map(value => value.mainsnak.datavalue.value.id).includes('Q5'))
-				console.log("they're a human!");
-			
+			if (item.claims.P31?.map(value => value.mainsnak.datavalue.value.id).includes('Q5')) {
+				let deathClaim = item.claims.P570;
+				if (deathClaim) {
+					let time = deathClaim[0].mainsnak.datavalue.value.time;
+					time = DateTime.fromISO(time.substring(1));
+					statementArr[statement] += ` (who died on ${time.toLocaleString()}) `;
+					time = time.plus({ 'year': 70 });
+					expiredDateArr.push(time);
+					calendarSection.style.display = 'block';
+				} else {
+					statementArr[statement] += " (who is still alive) ";
+				}
+			}
+			if (id == idArr[statement].length-1)
+				statementArr[statement] += '.';
 		}
 	}
-
-
+	
+	displayExpiredDate();
 }
 
 //step 5: display "This copyright will expire on ..."
@@ -240,6 +206,8 @@ function displayExpiredDate() {
 	searchResultsEl.style.left = '-100%';
 	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
+	addDate.style.display = "block";
+	openEvent.style.display = "none";
 }
 
 //search
