@@ -30,9 +30,15 @@ var openEvent = document.getElementById('open-event');
 
 claimDictionary = {
 	"P50": " was authored by ",
+	"P123": " was published by ",
 	"P170": " was created by ",
+	"P178": " was developed by ",
 	"P3931": " copyright held by "
 };
+
+dateDictionary = {
+	"P577": " publication date "
+}
 
 var bannerEl = document.querySelector("#banner");
 var formEl = document.querySelector("form");
@@ -54,6 +60,7 @@ const badDataBase = " is either not a copyrightable work or this data is incompl
 //functions
 //====================================
 //step 1: get superman data from wikidata
+//step 1: get stellaris data from wikidata
 function fetchTitle(title) {
 	fetch(apiUrlBase + titleBase + title)
 		.then(function (response) {
@@ -75,6 +82,7 @@ function fetchTitle(title) {
 }
 
 //alternative step 1: get Q79015 (superman) data from wikidata
+//alternative step 1: get Q20829312 (stellaris) data from wikidata
 function fetchId(id) {
 	fetch(apiUrlBase + idBase + id)
 		.then(function (response) {
@@ -92,40 +100,43 @@ function fetchId(id) {
 }
 
 //step 2: display "superman was created by" 
+//step 2: display "stellaris was developed by ... and published by ..."
 function displayId(data) {
-	dataResult = "";
+	//setup
+	title = data.entities[id].labels.en.value;
+	statementArr = [];
 	idArr = [];
-	var item = data.entities[id];
-	for (claimId in claimDictionary) {
-		var claim = item.claims[claimId];
-		if (claim)
-			break;
-	}
+	
+	//filter claims
+	var claims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in claimDictionary);	//filters the claims down to just the ones present in claimDictionary
+	console.log(claims);	//claims is what I like to call an array-dictionary
 
-	console.log(`${item.labels.en.value} (${id})`);
-	dataResult = dataResult.concat(item.labels.en.value);
-
-	if (!claim) {
+	//guard against empty claim array
+ 	if (claims.length === 0) {
 		console.log("data is incomplete :(");
-		// dataResult = "data is incomplete :(";
 		expireDateEl.textContent =  "";
-		dataPEl.innerHTML = dataResult + badDataBase;
+		dataPEl.innerHTML = title + badDataBase;
 		searchResultsEl.style.display = "none";
 		dataEl.style.display = "block";
 		return;
 	}
-
-	console.log(claimDictionary[claimId]);
-	dataResult = dataResult.concat(claimDictionary[claimId]);
-	for (i = 0; i < claim.length; i++) {
-		// console.log(claim[i].mainsnak.datavalue.value.id);
-		idArr.push(claim[i].mainsnak.datavalue.value.id);
-	}
-	id = idArr.join("|");
+	
+	claims.forEach(claim => {
+		// build the statements
+		statementArr.push(`${title}${claimDictionary[claim[0]]}`);	
+		// get the values that will go into the statements
+		idArr.push(claim[1].map(value => value.mainsnak.datavalue.value.id));	
+	});
+	
+	//build the list of id's to search
+	id = idArr.map(e => e.join('|')).join('|');
+	
+	//goto step 3
 	fetchCreators(id);
 }
 
 //step 3: get the people superman was created by
+//step 3: get the people stellaris was developed and published by
 function fetchCreators(id) {
 	fetch(apiUrlBase + idBase + id)
 		.then(function (response) {
