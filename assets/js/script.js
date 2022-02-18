@@ -74,11 +74,7 @@ function fetchTitle(title) {
 			response.json()
 				.then(function (data) {
 					console.log(data);
-					for (id in data.entities) {
-						// console.log(id);
-						displayId(data);
-					}
-
+					displayId(data);
 					return true;
 				});
 		});
@@ -112,11 +108,13 @@ function displayId(data) {
 	expiredDateArr = [];
 	workForHireExpiredDateArr = [];
 	livingCopyrightHolderArr = [];
+	let publishedDate;
 	
 	//get published date
-	publishedDate = data.entities[id].claims.P577?.[0].mainsnak.datavalue.value.time;
-	if(publishedDate) {
-		publishedDate = makeDate(publishedDate, data.entities[id].claims.P577[0].mainsnak.datavalue.value.precision);
+	let publishedClaim = data.entities[id].claims.P577;
+	if(publishedClaim) {
+		const {time, precision} = publishedClaim[0].mainsnak.datavalue.value;
+		publishedDate = makeDate(time, precision);
 		workForHireExpiredDateArr.push(publishedDate.plus({ 'year': 90 }));
 		statementArr.push(`${title}${dateDictionary['P577']}${publishedDate.toLocaleString()}`);
 		idArr.push([]);
@@ -148,7 +146,7 @@ function displayId(data) {
 	//build the list of id's to search
 	id = idArr.filter(e => e.length != 0).map(e => e.join('|')).join('|');
 
-	if(publishedDate)
+	if(publishedClaim)
 		claims.unshift('P577');
 	
 	//goto step 3
@@ -195,12 +193,11 @@ function displayCreators(data) {
 				let deathClaim = item.claims.P570;
 				if (deathClaim) {
 					//yes -> build out the statement
-					let time = deathClaim[0].mainsnak.datavalue.value.time;
-					time = makeDate(time, deathClaim[0].mainsnak.datavalue.value.precision);
+					let {time, precision} = deathClaim[0].mainsnak.datavalue.value;
+					time = makeDate(time, precision);
 					statementArr[statement] += ` (who died on ${time.toLocaleString()})`;
 					//calculate when it'll expire
-					time = time.plus({ 'year': 70 });
-					expiredDateArr.push(time);
+					expiredDateArr.push(time.plus({ 'year': 70 }));
 				} else {
 					//no -> build out the statement
 					statementArr[statement] += " (who is still alive)";
@@ -210,9 +207,10 @@ function displayCreators(data) {
 			//check if published statement, and has a publication date qualifier
 			if(claims[statement][0] == 'P123' && claims[statement][1][id].qualifiers) {
 				//get the date from the qualifier
-				let time = claims[statement][1][id].qualifiers.P577?.[0].datavalue.value;
-				if (time != undefined) {
-					time = makeDate(time.time, time.precision);
+				let publisherClaim = claims[statement][1][id].qualifiers.P577;
+				if (publisherClaim) {
+					let {time, precision} = publisherClaim[0].datavalue.value;
+					time = makeDate(time, precision);
 					statementArr[statement] += ` on ${time.toLocaleString()}`;
 					workForHireExpiredDateArr.push(publishedDate.plus({ 'year': 90 }));	//future-proofing
 				}
@@ -247,17 +245,14 @@ function displayExpiredDate() {
 		displayText = `This copyright will expire 70 years after ${livingCopyrightHolderArr.join(", ")} die${livingCopyrightHolderArr.length > 1 ? "" : "s"}.`;
 	} else if (expiredDateArr.length != 0) {
 		//if there are only dead copyright holders
-		for(let i=0; i<expiredDateArr.length; i++)
-			if (expiredDate === null || expiredDateArr[i] > expiredDate)
-				expiredDate = expiredDateArr[i];
+		//find the last date based on death
+		expiredDate = expiredDateArr.reduce((prev, cur) => cur > prev ? cur : prev);
 		displayText = `This copyright expires on <span class="expired-date">${expiredDate.toLocaleString()}</span>.`;
 	}
 	//add a disclaimer for works for hire
 	if (workForHireExpiredDateArr.length != 0) {
 		//find the earliest date based on publication
-		for(let i=0; i<workForHireExpiredDateArr.length; i++)
-			if( workForHireExpiredDate === null || workForHireExpiredDateArr[i] < workForHireExpiredDate )
-				workForHireExpiredDate = workForHireExpiredDateArr[i];
+		workForHireExpiredDate = workForHireExpiredDateArr.reduce((prev, cur) => cur < prev ? cur : prev);
 		workForHireText = `If this was a work for hire, it will expire on ${workForHireExpiredDate.toLocaleString()}`;
 	}
 	
@@ -335,10 +330,8 @@ function hideSearchResults() {
 }
 
 function addToHistory(label) {
-	for (i = 0; i < searchHistory.length; i++) {
-		if (searchHistory[i].id == id)
-			return;
-	}
+	if (searchHistory.map(index => index.id).includes(id)) 
+		return;
 	searchHistory.push({ id, label });
 	localStorage.setItem("history", JSON.stringify(searchHistory));
 	addHistoryEl(id, label);
@@ -346,9 +339,8 @@ function addToHistory(label) {
 
 function loadHistory() {
 	searchHistory = JSON.parse(localStorage.getItem("history")) || [];
-	for (i = 0; i < searchHistory.length; i++) {
+	for (i = 0; i < searchHistory.length; i++)
 		addHistoryEl(searchHistory[i].id, searchHistory[i].label);
-	}
 }
 
 function addHistoryEl(id, label) {
