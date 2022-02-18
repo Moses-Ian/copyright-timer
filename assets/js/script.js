@@ -124,7 +124,7 @@ function displayId(data) {
 	
 	//filter claims
 	claims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in claimDictionary);	//filters the claims down to just the ones present in claimDictionary
-	console.log(claims);	//claims is what I like to call an array-dictionary
+	// console.log(claims);	//claims is what I like to call an array-dictionary
 
 	//guard against empty claim array
  	if (claims.length === 0) {
@@ -177,14 +177,9 @@ function fetchCreators(id) {
 function displayCreators(data) {
 	//setup
 	
-	console.log(claims);
-	console.log(statementArr);
-	console.log(idArr);
-	
 	//loop through all creators/publishers/devs
 	for(let statement=0; statement<statementArr.length; statement++){
 		for(let id=0; id<idArr[statement].length; id++) {
-			console.log(statement, id, idArr[statement][id]);
 			if (idArr[statement][id].length == 0) continue;
 			let item = data.entities[idArr[statement][id]];
 			//build out the statement
@@ -213,8 +208,6 @@ function displayCreators(data) {
 				}
 			}
 			//check if published statement, and has a publication date qualifier
-			console.log(claims[statement][0]);
-			console.log(claims[statement][1][id].qualifiers);
 			if(claims[statement][0] == 'P123' && claims[statement][1][id].qualifiers) {
 				//get the date from the qualifier
 				let time = claims[statement][1][id].qualifiers.P577?.[0].datavalue.value;
@@ -244,37 +237,11 @@ function displayCreators(data) {
 
 //step 5: display "This copyright will expire on ..."
 function displayExpiredDate() {
-/*  	expiredDate = null;
-	var displayText;
-	if (expiredDateArr.length) {
-		//get the last date
-		for (i = 0; i < expiredDateArr.length; i++)
-			if (expiredDate === null || expiredDateArr[i] > expiredDate)
-				expiredDate = expiredDateArr[i];
-		//build the textContent
-		displayText = `This copyright expires on <span class="expired-date">${expiredDate.toLocaleString()}</span>.`;
-	} else {
-		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
-	}
-
- 
-	// dataPEl.textContent = dataResult;
-	expireDateEl.innerHTML = displayText;
-	searchResultsEl.style.left = '-100%';
-	searchResultsEl.style.display = "none";
-	dataEl.style.display = "block";
-	addDate.style.display = "block";
-	openEvent.style.display = "none";
- */	
 	expiredDate = null;
 	let workForHireExpiredDate = null
 	var displayText;
 	let workForHireText;
 	
-	console.log(livingCopyrightHolderArr);
-	console.log(expiredDateArr);
-	console.log(workForHireExpiredDateArr);
-
 	//if there are living copyright holders
 	if (livingCopyrightHolderArr.length != 0) {
 		displayText = `This copyright will expire 70 years after ${livingCopyrightHolderArr.join(", ")} die${livingCopyrightHolderArr.length > 1 ? "" : "s"}.`;
@@ -420,7 +387,6 @@ function peakHistory() {
 
 function makeDate(value, precision) {
 	//since the values can be imprecise, making dates from wikidata has an extra layer of hassle
-	console.log(value);
 	let isoString = '';
 	if (precision >= 6)
 		isoString += value.substring(1,5);
