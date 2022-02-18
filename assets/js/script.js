@@ -16,7 +16,7 @@ var searchTitle;
 var expiredDateArr = [];
 var workForHireExpiredDateArr = [];
 var expiredDate;
-var copyrightHolderArr = [];
+var livingCopyrightHolderArr = [];
 
 // Google calendar variables
 var CLIENT_ID = '191270176037-jnegufok0sdp2g71iqs83qipcavfaaem.apps.googleusercontent.com';
@@ -39,7 +39,7 @@ claimDictionary = {
 };
 
 dateDictionary = {
-	"P577": " publication date "
+	"P577": " was published on "
 }
 
 var bannerEl = document.querySelector("#banner");
@@ -49,6 +49,7 @@ var searchResultsEl = document.querySelector("#search-results");
 var dataEl = document.querySelector("#data");
 var dataUlEl = document.querySelector("#data-ul");
 var expireDateEl = document.querySelector("#expire-date");
+var workForHireEl = document.querySelector("#work-for-hire");
 var historyEl = document.querySelector("#search-history ul");
 var showHistoryEl = document.querySelector("#show-history");
 var arrowEl = document.querySelector("#arrow");
@@ -108,20 +109,29 @@ function displayId(data) {
 	title = data.entities[id].labels.en.value;
 	statementArr = [];
 	idArr = [];
+	expiredDateArr = [];
+	workForHireExpiredDateArr = [];
+	livingCopyrightHolderArr = [];
 	
 	//get published date
 	publishedDate = data.entities[id].claims.P577?.[0].mainsnak.datavalue.value.time;
-	if(publishedDate)
-		publishedDate = DateTime.fromISO(publishedDate.substring(1));
+	if(publishedDate) {
+		publishedDate = makeDate(publishedDate, data.entities[id].claims.P577[0].mainsnak.datavalue.value.precision);
+		workForHireExpiredDateArr.push(publishedDate.plus({ 'year': 90 }));
+		statementArr.push(`${title}${dateDictionary['P577']}${publishedDate.toLocaleString()}`);
+		idArr.push([]);
+	}
 	
 	//filter claims
 	claims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in claimDictionary);	//filters the claims down to just the ones present in claimDictionary
-	// console.log(claims);	//claims is what I like to call an array-dictionary
+	console.log(claims);	//claims is what I like to call an array-dictionary
 
 	//guard against empty claim array
  	if (claims.length === 0) {
 		console.log("data is incomplete :(");
 		expireDateEl.textContent =  "";
+		workForHireEl.textContent = "";
+		workForHireEl.style.display = "none";
 		dataUlEl.innerHTML = title + badDataBase;
 		searchResultsEl.style.display = "none";
 		dataEl.style.display = "block";
@@ -136,7 +146,10 @@ function displayId(data) {
 	});
 	
 	//build the list of id's to search
-	id = idArr.map(e => e.join('|')).join('|');
+	id = idArr.filter(e => e.length != 0).map(e => e.join('|')).join('|');
+
+	if(publishedDate)
+		claims.unshift('P577');
 	
 	//goto step 3
 	fetchCreators(id);
@@ -163,19 +176,24 @@ function fetchCreators(id) {
 //step 4: display "Jerry Siegal who died on 28 Jan 1996, etc"
 function displayCreators(data) {
 	//setup
-	expiredDateArr = [];
-	workForHireExpiredDateArr = [];
-	// copyrightHolderArr = [];
+	
+	console.log(claims);
+	console.log(statementArr);
+	console.log(idArr);
 	
 	//loop through all creators/publishers/devs
 	for(let statement=0; statement<statementArr.length; statement++){
 		for(let id=0; id<idArr[statement].length; id++) {
+			console.log(statement, id, idArr[statement][id]);
+			if (idArr[statement][id].length == 0) continue;
 			let item = data.entities[idArr[statement][id]];
 			//build out the statement
+			if (id != 0)
+				statementArr[statement] += ',';
 			if (id == idArr[statement].length-1 && id != 0)
-				statementArr[statement] += 'and ';
+				statementArr[statement] += ' and';
+			statementArr[statement] += ' ';
 			statementArr[statement] += item.labels.en.value;
-			// copyrightHolderArr.push(item.labels.en.value);
 			//check if human
 			if (item.claims.P31?.map(value => value.mainsnak.datavalue.value.id).includes('Q5')) {
 				//yes -> check if dead
@@ -183,21 +201,28 @@ function displayCreators(data) {
 				if (deathClaim) {
 					//yes -> build out the statement
 					let time = deathClaim[0].mainsnak.datavalue.value.time;
-					time = DateTime.fromISO(time.substring(1));
-					statementArr[statement] += ` (who died on ${time.toLocaleString()}) `;
+					time = makeDate(time, deathClaim[0].mainsnak.datavalue.value.precision);
+					statementArr[statement] += ` (who died on ${time.toLocaleString()})`;
 					//calculate when it'll expire
 					time = time.plus({ 'year': 70 });
 					expiredDateArr.push(time);
 				} else {
 					//no -> build out the statement
-					statementArr[statement] += " (who is still alive) ";
+					statementArr[statement] += " (who is still alive)";
+					livingCopyrightHolderArr.push(item.labels.en.value);
 				}
 			}
-			//check if published statement
-			if(claims[statement][0] == 'P123' && publishedDate) {
-				statementArr[statement] += ` on ${publishedDate.toLocaleString()}`;
-				publishedDate = publishedDate.plus({ 'year': 90 });
-				workForHireExpiredDateArr.push(publishedDate);
+			//check if published statement, and has a publication date qualifier
+			console.log(claims[statement][0]);
+			console.log(claims[statement][1][id].qualifiers);
+			if(claims[statement][0] == 'P123' && claims[statement][1][id].qualifiers) {
+				//get the date from the qualifier
+				let time = claims[statement][1][id].qualifiers.P577?.[0].datavalue.value;
+				if (time != undefined) {
+					time = makeDate(time.time, time.precision);
+					statementArr[statement] += ` on ${time.toLocaleString()}`;
+					workForHireExpiredDateArr.push(publishedDate.plus({ 'year': 90 }));	//future-proofing
+				}
 			}
 			//close out the statement
 			if (id == idArr[statement].length-1)
@@ -206,6 +231,7 @@ function displayCreators(data) {
 	}
 	
 	//put the statements into their html elements
+	dataUlEl.innerHTML = "";	//no internal handlers -> this is ok
 	statementArr.forEach(statement => {
 		let liEl = document.createElement('li');
 		liEl.textContent = statement;
@@ -240,9 +266,45 @@ function displayExpiredDate() {
 	addDate.style.display = "block";
 	openEvent.style.display = "none";
  */	
+	expiredDate = null;
+	let workForHireExpiredDate = null
+	var displayText;
+	let workForHireText;
+	
+	console.log(livingCopyrightHolderArr);
+	console.log(expiredDateArr);
+	console.log(workForHireExpiredDateArr);
 
+	//if there are living copyright holders
+	if (livingCopyrightHolderArr.length != 0) {
+		displayText = `This copyright will expire 70 years after ${livingCopyrightHolderArr.join(", ")} die${livingCopyrightHolderArr.length > 1 ? "" : "s"}.`;
+	} else if (expiredDateArr.length != 0) {
+		//if there are only dead copyright holders
+		for(let i=0; i<expiredDateArr.length; i++)
+			if (expiredDate === null || expiredDateArr[i] > expiredDate)
+				expiredDate = expiredDateArr[i];
+		displayText = `This copyright expires on <span class="expired-date">${expiredDate.toLocaleString()}</span>.`;
+	}
+	//add a disclaimer for works for hire
+	if (workForHireExpiredDateArr.length != 0) {
+		//find the earliest date based on publication
+		for(let i=0; i<workForHireExpiredDateArr.length; i++)
+			if( workForHireExpiredDate === null || workForHireExpiredDateArr[i] < workForHireExpiredDate )
+				workForHireExpiredDate = workForHireExpiredDateArr[i];
+		workForHireText = `If this was a work for hire, it will expire on ${workForHireExpiredDate.toLocaleString()}`;
+	}
 	
 
+	//show the damn data finally
+	expireDateEl.innerHTML = displayText;
+	expireDateEl.style.display = displayText != undefined ? "block" : "none";
+	workForHireEl.innerHTML = workForHireText;
+	workForHireEl.style.display = workForHireText != null ? "block" : "none";
+	searchResultsEl.style.left = '-100%';
+	searchResultsEl.style.display = "none";
+	dataEl.style.display = "block";
+	addDate.style.display = "block";
+	openEvent.style.display = "none";
 
 
 
@@ -354,6 +416,19 @@ function peakHistory() {
 			return;
 		historyContainerEl.style.height = '0';
 	}
+}
+
+function makeDate(value, precision) {
+	//since the values can be imprecise, making dates from wikidata has an extra layer of hassle
+	console.log(value);
+	let isoString = '';
+	if (precision >= 6)
+		isoString += value.substring(1,5);
+	if (precision >= 10)
+		isoString += value.substring(5,8);
+	if (precision >= 11)
+		isoString += value.substring(8, 11);
+	return DateTime.fromISO(isoString);
 }
 
 //listeners
