@@ -39,7 +39,8 @@ claimDictionary = {
 };
 
 dateDictionary = {
-	"P577": " was published on "
+	"P577": " was published on ",
+	"P10135": " was recorded on "
 }
 
 var bannerEl = document.querySelector("#banner");
@@ -111,21 +112,34 @@ function displayId(data) {
 	let publishedDate;
 	
 	//get published date
-	let publishedClaim = data.entities[id].claims.P577;
-	if(publishedClaim) {
-		const {time, precision} = publishedClaim[0].mainsnak.datavalue.value;
-		publishedDate = makeDate(time, precision);
-		workForHireExpiredDateArr.push(publishedDate.plus({ 'year': 90 }));
-		statementArr.push(`${title}${dateDictionary['P577']}${publishedDate.toLocaleString()}`);
+	let publishedClaims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in dateDictionary);
+	if (publishedClaims.length > 0) {
+		publishedDate = publishedClaims.reduce((previousClaim, currentClaim) => {
+			const currentTime = currentClaim[1][0].mainsnak.datavalue.value.time;
+			const currentPrecision = currentClaim[1][0].mainsnak.datavalue.value.precision;
+			const currentDate = makeDate(currentTime, currentPrecision);
+			if(previousClaim === null)
+				return [currentClaim[0], currentDate];
+
+			const prevDate = previousClaim[1];
+			
+			return prevDate < currentDate ? previousClaim : [currentClaim[0], currentDate];
+		}, null);
+		
+		workForHireExpiredDateArr.push(publishedDate[1].plus({ 'year': 90 }));
+		statementArr.push(`${title}${dateDictionary[publishedDate[0]]}${publishedDate[1].toLocaleString()}`);
 		idArr.push([]);
 	}
+	
+	
+	
 	
 	//filter claims
 	claims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in claimDictionary);	//filters the claims down to just the ones present in claimDictionary
 	// console.log(claims);	//claims is what I like to call an array-dictionary
 
 	//guard against empty claim array
- 	if (claims.length === 0) {
+ 	if (statementArr.length === 0) {
 		console.log("data is incomplete :(");
 		expireDateEl.textContent =  "";
 		workForHireEl.textContent = "";
@@ -146,8 +160,8 @@ function displayId(data) {
 	//build the list of id's to search
 	id = idArr.filter(e => e.length != 0).map(e => e.join('|')).join('|');
 
-	if(publishedClaim)
-		claims.unshift('P577');
+	if(publishedDate.length != 0)
+		claims.unshift(publishedDate[0]);
 	
 	//goto step 3
 	fetchCreators(id);
@@ -165,6 +179,7 @@ function fetchCreators(id) {
 			response.json()
 				.then(function (data) {
 					console.log(data);
+					//lol if this is just {success: 1}, it's because there was no creator information
 					displayCreators(data);
 					return true;
 				});
@@ -177,7 +192,10 @@ function displayCreators(data) {
 	
 	//loop through all creators/publishers/devs
 	for(let statement=0; statement<statementArr.length; statement++){
+		if (idArr[statement].length == 0)
+			statementArr[statement] += '.';
 		for(let id=0; id<idArr[statement].length; id++) {
+			console.log(statement, id, idArr[statement]);
 			if (idArr[statement][id].length == 0) continue;
 			let item = data.entities[idArr[statement][id]];
 			//build out the statement
@@ -253,7 +271,7 @@ function displayExpiredDate() {
 	if (workForHireExpiredDateArr.length != 0) {
 		//find the earliest date based on publication
 		workForHireExpiredDate = workForHireExpiredDateArr.reduce((prev, cur) => cur < prev ? cur : prev);
-		workForHireText = `If this was a work for hire, it will expire on ${workForHireExpiredDate.toLocaleString()}`;
+		workForHireText = `If this was a work for hire, it will expire on ${workForHireExpiredDate.toLocaleString()}.`;
 	}
 	
 
