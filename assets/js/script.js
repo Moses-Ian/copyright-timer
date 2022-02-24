@@ -39,7 +39,9 @@ claimDictionary = {
 };
 
 dateDictionary = {
+	"P571": " was incepted on ",
 	"P577": " was published on ",
+	"P1191": " was first performed on ",
 	"P10135": " was recorded on "
 }
 
