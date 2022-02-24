@@ -149,6 +149,7 @@ function displayId(data) {
 		dataUlEl.innerHTML = title + badDataBase;
 		searchResultsEl.style.display = "none";
 		dataEl.style.display = "block";
+		updateSigninStatus(undefined, 'none');
 		return;
 	}
 	
@@ -267,7 +268,17 @@ function displayExpiredDate() {
 		//if there are only dead copyright holders
 		//find the last date based on death
 		expiredDate = expiredDateArr.reduce((prev, cur) => cur > prev ? cur : prev);
-		displayText = `This copyright expires on <span class="expired-date">${expiredDate.toLocaleString()}</span>.`;
+		//build the textContent
+		let alreadyExpired = expiredDate < DateTime.now();	//boolean
+		let expired = alreadyExpired ? 'expired' : 'expires';
+		displayText = `This copyright ${expired} on <span class="expired-date">${expiredDate.toLocaleString()}</span>. `;
+		let display = alreadyExpired ? 'none' : 'block';
+		updateSigninStatus(undefined, display);
+		if (alreadyExpired)
+			displayText = displayText.concat(`${title} is in the public domain.`);
+	} else {
+		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
+		updateSigninStatus(undefined, 'none');
 	}
 	//add a disclaimer for works for hire
 	if (workForHireExpiredDateArr.length != 0) {
@@ -287,7 +298,7 @@ function displayExpiredDate() {
 	dataEl.style.display = "block";
 	addDate.style.display = "block";
 	openEvent.style.display = "none";
-
+	updateSigninStatus();
 
 
 
@@ -323,7 +334,7 @@ function displaySearchResults(data) {
 		h3El.textContent = data.search[i].label;
 		pEl.textContent = data.search[i].description;
 		// h3El.classList.add("label");
-		
+
 
 		liEl.appendChild(h3El);
 		liEl.appendChild(pEl);
@@ -439,11 +450,12 @@ historyEl.addEventListener("click", function (event) {
 	var targetLiEl = event.target.closest("li");
 	id = targetLiEl.dataset.itemId;
 	fetchId(id);
+	console.log(id)
 });
 
 bannerEl.addEventListener("click", function (event) {
 	target = event.target;
-	if(target.tagName == 'H1')
+	if (target.tagName == 'H1')
 		location.reload();
 });
 
@@ -483,22 +495,27 @@ function initClient() {
 		appendPre(JSON.stringify(error, null, 2));
 	});
 }
-
+let lastSignIn = false
 /**
  *  Called when the signed in status changes, to update the UI
  *  appropriately. After a sign-in, the API is called.
  */
-function updateSigninStatus(isSignedIn) {
+function updateSigninStatus(isSignedIn, display = 'block') {
+	if (isSignedIn === undefined) {
+		isSignedIn = lastSignIn
+	};
+
 	if (isSignedIn) {
 		authorizeButton.style.display = 'none';
-		signoutButton.style.display = 'block';
-		addDate.style.display = 'block';
+		signoutButton.style.display = display;
+		addDate.style.display = display;
 
 	} else {
-		authorizeButton.style.display = 'block';
+		authorizeButton.style.display = display;
 		signoutButton.style.display = 'none';
 		addDate.style.display = 'none';
 	}
+	lastSignIn = isSignedIn
 }
 
 /**
@@ -553,11 +570,11 @@ addDate.addEventListener('click', function addEvent() {
 	});
 
 	request.execute(function (event) {
-		
-	openEvent.style.display = 'block';
-	openEvent.setAttribute('onclick', "window.open('" + event.htmlLink + "','_blank')");
-	openEvent.setAttribute('target', "_blank");
-	// onclick=" window.open('http://google.com','_blank')"
+
+		openEvent.style.display = 'block';
+		openEvent.setAttribute('onclick', "window.open('" + event.htmlLink + "','_blank')");
+		openEvent.setAttribute('target', "_blank");
+		// onclick=" window.open('http://google.com','_blank')"
 
 	});
 	signoutButton.style.display = 'none'
