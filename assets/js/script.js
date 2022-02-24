@@ -39,7 +39,7 @@ claimDictionary = {
 };
 
 dateDictionary = {
-	"P571": " was incepted on ",
+	// "P571": " was incepted on ",	//this causes problems
 	"P577": " was published on ",
 	"P1191": " was first performed on ",
 	"P10135": " was recorded on "
@@ -111,7 +111,7 @@ function displayId(data) {
 	expiredDateArr = [];
 	workForHireExpiredDateArr = [];
 	livingCopyrightHolderArr = [];
-	let publishedDate;
+	let publishedDate = [];
 	
 	//get published date
 	let publishedClaims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in dateDictionary);
@@ -141,7 +141,7 @@ function displayId(data) {
 	// console.log(claims);	//claims is what I like to call an array-dictionary
 
 	//guard against empty claim array
- 	if (statementArr.length === 0) {
+ 	if (statementArr.length === 0 && claims.length === 0) {
 		console.log("data is incomplete :(");
 		expireDateEl.textContent =  "";
 		workForHireEl.textContent = "";
@@ -198,7 +198,6 @@ function displayCreators(data) {
 		if (idArr[statement].length == 0)
 			statementArr[statement] += '.';
 		for(let id=0; id<idArr[statement].length; id++) {
-			console.log(statement, id, idArr[statement]);
 			if (idArr[statement][id].length == 0) continue;
 			let item = data.entities[idArr[statement][id]];
 			//build out the statement
@@ -277,7 +276,7 @@ function displayExpiredDate() {
 		if (alreadyExpired)
 			displayText = displayText.concat(`${title} is in the public domain.`);
 	} else {
-		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
+		displayText = '';
 		updateSigninStatus(undefined, 'none');
 	}
 	//add a disclaimer for works for hire
@@ -427,7 +426,7 @@ formEl.addEventListener("submit", function () {
 	searchInput = formInputEl.value.trim() || formInputEl.placeholder;
 	formInputEl.setAttribute("placeholder", searchInput);
 	formEl.reset();
-	console.log(searchInput);
+	// console.log(searchInput);
 	calendarSection.style.display = 'none';
 
 	search(searchInput);
@@ -450,7 +449,7 @@ historyEl.addEventListener("click", function (event) {
 	var targetLiEl = event.target.closest("li");
 	id = targetLiEl.dataset.itemId;
 	fetchId(id);
-	console.log(id)
+	// console.log(id)
 });
 
 bannerEl.addEventListener("click", function (event) {
