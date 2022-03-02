@@ -4,6 +4,7 @@ var id = "Q79015";	//superman->this will update with form update
 var title = '';
 // var title = "Katniss Everdeen";
 var idArr = [];
+var claims;
 var apiUrlBase = `https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&origin=*&languages=en&normalize=yes`
 var idBase = '&ids=';
 var titleBase = '&sites=enwiki&titles=';
@@ -13,8 +14,9 @@ var dataResult = "";
 var searchHistory = [];
 var searchTitle;
 var expiredDateArr = [];
+var workForHireExpiredDateArr = [];
 var expiredDate;
-var copyrightHolderArr = [];
+var livingCopyrightHolderArr = [];
 
 // Google calendar variables
 var CLIENT_ID = '191270176037-jnegufok0sdp2g71iqs83qipcavfaaem.apps.googleusercontent.com';
@@ -30,17 +32,27 @@ var openEvent = document.getElementById('open-event');
 
 claimDictionary = {
 	"P50": " was authored by ",
+	"P123": " was published by ",
 	"P170": " was created by ",
+	"P178": " was developed by ",
 	"P3931": " copyright held by "
 };
+
+dateDictionary = {
+	// "P571": " was incepted on ",	//this causes problems
+	"P577": " was published on ",
+	"P1191": " was first performed on ",
+	"P10135": " was recorded on "
+}
 
 var bannerEl = document.querySelector("#banner");
 var formEl = document.querySelector("form");
 var formInputEl = document.querySelector("#form-input");
 var searchResultsEl = document.querySelector("#search-results");
 var dataEl = document.querySelector("#data");
-var dataPEl = document.querySelector("#data-p");
+var dataUlEl = document.querySelector("#data-ul");
 var expireDateEl = document.querySelector("#expire-date");
+var workForHireEl = document.querySelector("#work-for-hire");
 var historyEl = document.querySelector("#search-history ul");
 var showHistoryEl = document.querySelector("#show-history");
 var arrowEl = document.querySelector("#arrow");
@@ -54,6 +66,7 @@ const badDataBase = " is either not a copyrightable work or this data is incompl
 //functions
 //====================================
 //step 1: get superman data from wikidata
+//step 1: get stellaris data from wikidata
 function fetchTitle(title) {
 	fetch(apiUrlBase + titleBase + title)
 		.then(function (response) {
@@ -64,17 +77,14 @@ function fetchTitle(title) {
 			response.json()
 				.then(function (data) {
 					console.log(data);
-					for (id in data.entities) {
-						// console.log(id);
-						displayId(data);
-					}
-
+					displayId(data);
 					return true;
 				});
 		});
 }
 
 //alternative step 1: get Q79015 (superman) data from wikidata
+//alternative step 1: get Q20829312 (stellaris) data from wikidata
 function fetchId(id) {
 	fetch(apiUrlBase + idBase + id)
 		.then(function (response) {
@@ -92,42 +102,76 @@ function fetchId(id) {
 }
 
 //step 2: display "superman was created by" 
+//step 2: display "stellaris was developed by ... and published by ..."
 function displayId(data) {
-	dataResult = "";
+	//setup
+	title = data.entities[id].labels.en.value;
+	statementArr = [];
 	idArr = [];
-	var item = data.entities[id];
-	for (claimId in claimDictionary) {
-		var claim = item.claims[claimId];
-		if (claim)
-			break;
+	expiredDateArr = [];
+	workForHireExpiredDateArr = [];
+	livingCopyrightHolderArr = [];
+	let publishedDate = [];
+	
+	//get published date
+	let publishedClaims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in dateDictionary);
+	if (publishedClaims.length > 0) {
+		publishedDate = publishedClaims.reduce((previousClaim, currentClaim) => {
+			const currentTime = currentClaim[1][0].mainsnak.datavalue.value.time;
+			const currentPrecision = currentClaim[1][0].mainsnak.datavalue.value.precision;
+			const currentDate = makeDate(currentTime, currentPrecision);
+			if(previousClaim === null)
+				return [currentClaim[0], currentDate];
+
+			const prevDate = previousClaim[1];
+			
+			return prevDate < currentDate ? previousClaim : [currentClaim[0], currentDate];
+		}, null);
+		
+		workForHireExpiredDateArr.push(publishedDate[1].plus({ 'year': 90 }));
+		statementArr.push(`${title}${dateDictionary[publishedDate[0]]}${publishedDate[1].toLocaleString()}`);
+		idArr.push([]);
 	}
+	
+	
+	
+	
+	//filter claims
+	claims = Object.entries(data.entities[id].claims).filter(claim => claim[0] in claimDictionary);	//filters the claims down to just the ones present in claimDictionary
+	// console.log(claims);	//claims is what I like to call an array-dictionary
 
-	title = item.labels.en.value;
-	console.log(`${title} (${id})`);
-	dataResult = dataResult.concat(title);
-
-	if (!claim) {
+	//guard against empty claim array
+ 	if (statementArr.length === 0 && claims.length === 0) {
 		console.log("data is incomplete :(");
-		// dataResult = "data is incomplete :(";
-		expireDateEl.textContent = "";
-		dataPEl.innerHTML = dataResult + badDataBase;
+		expireDateEl.textContent =  "";
+		workForHireEl.textContent = "";
+		workForHireEl.style.display = "none";
+		dataUlEl.innerHTML = title + badDataBase;
 		searchResultsEl.style.display = "none";
 		dataEl.style.display = "block";
 		updateSigninStatus(undefined, 'none');
 		return;
 	}
+	
+	claims.forEach(claim => {
+		// build the statements
+		statementArr.push(`${title}${claimDictionary[claim[0]]}`);	
+		// get the values that will go into the statements
+		idArr.push(claim[1].map(value => value.mainsnak.datavalue.value.id));	
+	});
+	
+	//build the list of id's to search
+	id = idArr.filter(e => e.length != 0).map(e => e.join('|')).join('|');
 
-	console.log(claimDictionary[claimId]);
-	dataResult = dataResult.concat(claimDictionary[claimId]);
-	for (i = 0; i < claim.length; i++) {
-		// console.log(claim[i].mainsnak.datavalue.value.id);
-		idArr.push(claim[i].mainsnak.datavalue.value.id);
-	}
-	id = idArr.join("|");
+	if(publishedDate.length != 0)
+		claims.unshift(publishedDate[0]);
+	
+	//goto step 3
 	fetchCreators(id);
 }
 
 //step 3: get the people superman was created by
+//step 3: get the people stellaris was developed and published by
 function fetchCreators(id) {
 	fetch(apiUrlBase + idBase + id)
 		.then(function (response) {
@@ -138,6 +182,7 @@ function fetchCreators(id) {
 			response.json()
 				.then(function (data) {
 					console.log(data);
+					//lol if this is just {success: 1}, it's because there was no creator information
 					displayCreators(data);
 					return true;
 				});
@@ -146,72 +191,117 @@ function fetchCreators(id) {
 
 //step 4: display "Jerry Siegal who died on 28 Jan 1996, etc"
 function displayCreators(data) {
-	expiredDateArr = [];
-	copyrightHolderArr = [];
-	for (i = 0; i < idArr.length; i++) {
-		if (i == idArr.length - 1 && idArr.length != 1)
-			dataResult = dataResult.concat('and ');
-		var item = data.entities[idArr[i]];
-		console.log(item.labels.en.value);
-		dataResult = dataResult.concat(item.labels.en.value);
-		copyrightHolderArr.push(item.labels.en.value);
-		var claim = item.claims.P570;
-		if (claim) {
-			// console.log("who died on");
-			// console.log(claim[0].mainsnak.datavalue.value.time);
-			var time = claim[0].mainsnak.datavalue.value.time
-			time = DateTime.fromISO(time.substring(1));
-			console.log(time.toLocaleString());
-			dataResult = dataResult.concat(` (who died on ${time.toLocaleString()}) `);
-			time = time.plus({ 'year': 70 });
-			console.log(time.toLocaleString());
-			expiredDateArr.push(time);
-			calendarSection.style.display = 'block'
-
+	//setup
+	
+	//loop through all creators/publishers/devs
+	for(let statement=0; statement<statementArr.length; statement++){
+		if (idArr[statement].length == 0)
+			statementArr[statement] += '.';
+		for(let id=0; id<idArr[statement].length; id++) {
+			if (idArr[statement][id].length == 0) continue;
+			let item = data.entities[idArr[statement][id]];
+			//build out the statement
+			if (id != 0)
+				statementArr[statement] += ',';
+			if (id == idArr[statement].length-1 && id != 0)
+				statementArr[statement] += ' and';
+			statementArr[statement] += ' ';
+			statementArr[statement] += item.labels.en.value;
+			//check if human
+			if (item.claims.P31?.map(value => value.mainsnak.datavalue.value.id).includes('Q5')) {
+				//yes -> check if dead
+				let deathClaim = item.claims.P570;
+				if (deathClaim) {
+					//yes -> build out the statement
+					let {time, precision} = deathClaim[0].mainsnak.datavalue.value;
+					time = makeDate(time, precision);
+					statementArr[statement] += ` (who died on ${time.toLocaleString()})`;
+					//calculate when it'll expire
+					expiredDateArr.push(time.plus({ 'year': 70 }));
+				} else {
+					//no -> build out the statement
+					statementArr[statement] += " (who is still alive)";
+					livingCopyrightHolderArr.push(item.labels.en.value);
+				}
+			}
+			//check if published statement, and has a publication date qualifier
+			if(claims[statement][0] == 'P123' && claims[statement][1][id].qualifiers) {
+				//get the date from the qualifier
+				let publisherClaim = claims[statement][1][id].qualifiers.P577;
+				if (publisherClaim) {
+					let {time, precision} = publisherClaim[0].datavalue.value;
+					time = makeDate(time, precision);
+					statementArr[statement] += ` on ${time.toLocaleString()}`;
+					workForHireExpiredDateArr.push(publishedDate.plus({ 'year': 90 }));	//future-proofing
+				}
+			}
+			//close out the statement
+			if (id == idArr[statement].length-1)
+				statementArr[statement] += '.';
 		}
-		else {	//still alive, or data is incomplete
-			console.log("who is still alive")
-			dataResult = dataResult.concat(" (who is still alive) ");
-		}
-
-
-
-		searchResultsEl.style.display = "none";
-
-		searchResultsEl.style.left = '-100%';
-		dataEl.style.display = "block";
-		addDate.style.display = "block"
-		openEvent.style.display = "none";
-		updateSigninStatus();
-		if (i == idArr.length - 1)
-			dataResult = dataResult.concat('.');
 	}
+	
+	//put the statements into their html elements
+	dataUlEl.innerHTML = "";	//no internal handlers -> this is ok
+	statementArr.forEach(statement => {
+		let liEl = document.createElement('li');
+		liEl.textContent = statement;
+		dataUlEl.appendChild(liEl);
+	});
+	
+	updateSigninStatus();
+	//goto step 5
+	displayExpiredDate();
+}
+
+//step 5: display "This copyright will expire on ..."
+function displayExpiredDate() {
 	expiredDate = null;
+	let workForHireExpiredDate = null
 	var displayText;
-	if (expiredDateArr.length) {
-		//get the last date
-		for (i = 0; i < expiredDateArr.length; i++)
-			if (expiredDate === null || expiredDateArr[i] > expiredDate)
-				expiredDate = expiredDateArr[i];
+	let workForHireText;
+	
+	//if there are living copyright holders
+	if (livingCopyrightHolderArr.length != 0) {
+		displayText = `This copyright will expire 70 years after ${livingCopyrightHolderArr.join(", ")} die${livingCopyrightHolderArr.length > 1 ? "" : "s"}.`;
+	} else if (expiredDateArr.length != 0) {
+		//if there are only dead copyright holders
+		//find the last date based on death
+		expiredDate = expiredDateArr.reduce((prev, cur) => cur > prev ? cur : prev);
 		//build the textContent
 		let alreadyExpired = expiredDate < DateTime.now();	//boolean
 		let expired = alreadyExpired ? 'expired' : 'expires';
 		displayText = `This copyright ${expired} on <span class="expired-date">${expiredDate.toLocaleString()}</span>. `;
 		let display = alreadyExpired ? 'none' : 'block';
 		updateSigninStatus(undefined, display);
-
 		if (alreadyExpired)
 			displayText = displayText.concat(`${title} is in the public domain.`);
 	} else {
-		displayText = `This copyright will expire 70 years after ${copyrightHolderArr.join(", ")} die${copyrightHolderArr.length > 1 ? "" : "s"}.`;
+		displayText = '';
 		updateSigninStatus(undefined, 'none');
 	}
+	//add a disclaimer for works for hire
+	if (workForHireExpiredDateArr.length != 0) {
+		//find the earliest date based on publication
+		workForHireExpiredDate = workForHireExpiredDateArr.reduce((prev, cur) => cur < prev ? cur : prev);
+		workForHireText = `If this was a work for hire, it will expire on ${workForHireExpiredDate.toLocaleString()}.`;
+	}
+	
 
-	dataPEl.textContent = dataResult;
+	//show the damn data finally
 	expireDateEl.innerHTML = displayText;
+	expireDateEl.style.display = displayText != undefined ? "block" : "none";
+	workForHireEl.innerHTML = workForHireText;
+	workForHireEl.style.display = workForHireText != null ? "block" : "none";
 	searchResultsEl.style.left = '-100%';
 	searchResultsEl.style.display = "none";
 	dataEl.style.display = "block";
+	addDate.style.display = "block";
+	openEvent.style.display = "none";
+	updateSigninStatus();
+
+
+
 }
 
 //search
@@ -271,10 +361,8 @@ function hideSearchResults() {
 }
 
 function addToHistory(label) {
-	for (i = 0; i < searchHistory.length; i++) {
-		if (searchHistory[i].id == id)
-			return;
-	}
+	if (searchHistory.map(index => index.id).includes(id)) 
+		return;
 	searchHistory.push({ id, label });
 	localStorage.setItem("history", JSON.stringify(searchHistory));
 	addHistoryEl(id, label);
@@ -282,9 +370,8 @@ function addToHistory(label) {
 
 function loadHistory() {
 	searchHistory = JSON.parse(localStorage.getItem("history")) || [];
-	for (i = 0; i < searchHistory.length; i++) {
+	for (i = 0; i < searchHistory.length; i++)
 		addHistoryEl(searchHistory[i].id, searchHistory[i].label);
-	}
 }
 
 function addHistoryEl(id, label) {
@@ -321,6 +408,18 @@ function peakHistory() {
 	}
 }
 
+function makeDate(value, precision) {
+	//since the values can be imprecise, making dates from wikidata has an extra layer of hassle
+	let isoString = '';
+	if (precision >= 6)
+		isoString += value.substring(1,5);
+	if (precision >= 10)
+		isoString += value.substring(5,8);
+	if (precision >= 11)
+		isoString += value.substring(8, 11);
+	return DateTime.fromISO(isoString);
+}
+
 //listeners
 //=====================================
 formEl.addEventListener("submit", function () {
@@ -328,7 +427,7 @@ formEl.addEventListener("submit", function () {
 	searchInput = formInputEl.value.trim() || formInputEl.placeholder;
 	formInputEl.setAttribute("placeholder", searchInput);
 	formEl.reset();
-	console.log(searchInput);
+	// console.log(searchInput);
 	calendarSection.style.display = 'none';
 
 	search(searchInput);
@@ -351,7 +450,7 @@ historyEl.addEventListener("click", function (event) {
 	var targetLiEl = event.target.closest("li");
 	id = targetLiEl.dataset.itemId;
 	fetchId(id);
-	console.log(id)
+	// console.log(id)
 });
 
 bannerEl.addEventListener("click", function (event) {
