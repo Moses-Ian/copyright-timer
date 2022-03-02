@@ -249,6 +249,7 @@ function displayCreators(data) {
 		dataUlEl.appendChild(liEl);
 	});
 	
+	updateSigninStatus();
 	//goto step 5
 	displayExpiredDate();
 }
